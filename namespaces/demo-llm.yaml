@@ -1,0 +1,7 @@
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: demo-llm
+  annotations:
+    openshift.io/description: "The LLM will be deployed in this namespace"
+    openshift.io/display-name: "Demo LLM"

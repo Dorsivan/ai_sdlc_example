@@ -1,0 +1,7 @@
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: mlflow
+  annotations:
+    openshift.io/description: "MLflow Tracking Server for Experimentation"
+    openshift.io/display-name: "MLflow Server"

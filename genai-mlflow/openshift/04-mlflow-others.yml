@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mlflow-test-connection
+  namespace: mlflow
+  labels:
+    app: mlflow-test-connection
+    app.kubernetes.io/part-of: mlflow
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['mlflow-service:5000']
+      resources:
+        requests:
+          memory: "32Mi"
+          cpu: "10m"
+        limits:
+          memory: "64Mi"
+          cpu: "50m"
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mlflow-test-training
+  namespace: mlflow
+  labels:
+    app: mlflow-test-training
+    app.kubernetes.io/part-of: mlflow
+spec:
+  containers:
+    - name: training
+      image: 'quay.io/troyer/mlflow-server-training-test:latest'
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: MLFLOW_TRACKING_URI
+          value: "http://mlflow-service:5000"
+        - name: MLFLOW_EXPERIMENT
+          value: helm-test
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "50m"
+        limits:
+          memory: "128Mi"
+          cpu: "100m"
+  restartPolicy: Never

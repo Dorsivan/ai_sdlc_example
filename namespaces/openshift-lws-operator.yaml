@@ -1,0 +1,7 @@
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: openshift-lws-operator
+  annotations:
+    openshift.io/description: "Leader Worker Set in installed here"
+    openshift.io/display-name: "openshift-lws-operator"
