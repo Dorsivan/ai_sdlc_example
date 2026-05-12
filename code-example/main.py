@@ -11,6 +11,7 @@ from mlflow.entities import AssessmentSource, AssessmentSourceType
 MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "gpt-oss-20b")
 MODEL_URL = os.getenv("MODEL_URL", "http://a5b3148f0995c48088e0800feaa2c651-1539933567.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1")
 SYSTEM_PROMPT = "You are an assistant that receives questions from a user using a terminal. As such, you answers are displayed in the terminal, and are expected to be mostly short, concise and not use formats like .md"
+os.environ["OPENAI_API_KEY"] = "doesn't-matter"
 
 
 def read_prompt_from_args_or_stdin(argv: list[str]) -> str:
@@ -25,6 +26,7 @@ def read_prompt_from_args_or_stdin(argv: list[str]) -> str:
 
     print("Usage: ask.py \"your question\"  (or pipe text into stdin)", file=sys.stderr)
     raise SystemExit(2)
+
 
 def create_prompt():
     prompt = mlflow.genai.register_prompt(
@@ -41,6 +43,7 @@ def create_prompt():
         #     "language": "en",
         # },
     )
+    return prompt
 
 
 @mlflow.trace(name="Stream Text Events", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
@@ -52,8 +55,6 @@ def stream_text_events(events: Iterable[object]) -> int:
     """
     exit_code = 0
     full_response_text = ""
-    span = mlflow.get_current_active_span()
-    print(span)
     try:
         for event in events:
             # In the Python SDK, events expose fields as attributes.
@@ -92,14 +93,12 @@ def stream_text_events(events: Iterable[object]) -> int:
 @mlflow.trace(name="Calling the model", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
 def call_the_model(client, prompt):
     # Streaming is enabled with stream=True. :contentReference[oaichttp://afc484d866d7843fa94860d25e3baeb8-2068025677.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1ite:4]{index=4}
-    span = mlflow.get_current_active_span()
-    print(span)
     events = client.responses.create(
         model=MODEL_DEFAULT,
         input=[
             {
                 "role": "system",
-                "content": SYSTEM_PROMPT
+                "content": mlflow.genai.load_prompt(name_or_uri="prompts:/terminal-prompt@latest").format()
             },
             {
                 "role": "user",
@@ -113,6 +112,23 @@ def call_the_model(client, prompt):
     )
 
     return events
+
+
+@mlflow.trace(name="Calling the model with chat completions", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
+def call_the_model_completions(client, prompt):
+    # Streaming is enabled with stream=True. :contentReference[oaichttp://afc484d866d7843fa94860d25e3baeb8-2068025677.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1ite:4]{index=4}
+    events = client.chat.completions.create(
+        model=MODEL_DEFAULT,
+        messages=[
+            {
+                "role": "system",
+                "content": SYSTEM_PROMPT
+            },
+            {"role": "user", "content": prompt},
+        ],
+    )
+
+    return events.choices[0].message.content
 
 
 @mlflow.trace(name="Complete Process", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
@@ -181,7 +197,7 @@ def main() -> int:
 
     client = OpenAI(base_url=MODEL_URL)
 
-    create_prompt()
+    # system_prompt = create_prompt()
     complete_model_process(prompt, client)
 
 
