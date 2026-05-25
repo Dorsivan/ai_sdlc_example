@@ -14,7 +14,7 @@ metadata:
     opendatahub.io/genai-asset: 'true'
     opendatahub.io/dashboard: 'true'
 spec:
-  replicas: 1
+  replicas:
   model:
     uri: hf://RedHatAI/gpt-oss-20b
     name: gpt-oss-20b

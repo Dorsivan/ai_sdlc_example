@@ -57,7 +57,6 @@ def stream_text_events(events: Iterable[object]) -> int:
     full_response_text = ""
     try:
         for event in events:
-            # In the Python SDK, events expose fields as attributes.
             etype = getattr(event, "type", None)
 
             if etype == "response.output_text.delta":
@@ -67,14 +66,12 @@ def stream_text_events(events: Iterable[object]) -> int:
                     print(delta, end="", flush=True)
 
             elif etype == "response.refusal.delta":
-                # Optional: if a refusal happens, you'll see it streamed too.
                 delta = getattr(event, "delta", "")
                 if delta:
                     print(delta, end="", flush=True)
                     exit_code = 3
 
             elif etype == "response.failed":
-                # Print something useful if available
                 resp = getattr(event, "response", None)
                 err = getattr(resp, "error", None) if resp else None
                 msg = getattr(err, "message", None) if err else "Response failed."
@@ -86,13 +83,12 @@ def stream_text_events(events: Iterable[object]) -> int:
         print("\n[interrupted]", file=sys.stderr)
         return 130
 
-    print()  # newline after streaming finishes
+    print()  
     return full_response_text
 
 
 @mlflow.trace(name="Calling the model", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
 def call_the_model(client, prompt):
-    # Streaming is enabled with stream=True. :contentReference[oaichttp://afc484d866d7843fa94860d25e3baeb8-2068025677.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1ite:4]{index=4}
     events = client.responses.create(
         model=MODEL_DEFAULT,
         input=[
@@ -116,7 +112,6 @@ def call_the_model(client, prompt):
 
 @mlflow.trace(name="Calling the model with chat completions", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
 def call_the_model_completions(client, prompt):
-    # Streaming is enabled with stream=True. :contentReference[oaichttp://afc484d866d7843fa94860d25e3baeb8-2068025677.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1ite:4]{index=4}
     events = client.chat.completions.create(
         model=MODEL_DEFAULT,
         messages=[

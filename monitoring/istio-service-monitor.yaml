@@ -1,8 +1,8 @@
-istioapiVersion: monitoring.coreos.com/v1
+apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: istiod-monitor
-  namespace: istio-system
+  namespace: openshift-ingress
 spec:
   targetLabels:
   - app
