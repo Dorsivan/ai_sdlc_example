@@ -16,8 +16,8 @@ metadata:
 spec:
   replicas:
   model:
-    uri: hf://Qwen/Qwen2.5-VL-7B-Instruct
-    name: qwen2.5-vl
+    uri: pvc://qwen-model-pvc/stored_model/
+    name: Qwen2.5-VL-7B-Instruct
   router:
     scheduler:
       template:
