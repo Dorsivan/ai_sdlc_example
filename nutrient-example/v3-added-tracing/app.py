@@ -7,6 +7,9 @@ import json
 import uuid
 from fastapi.staticfiles import StaticFiles
 
+import mlflow
+from mlflow.entities import AssessmentSource, AssessmentSourceType
+
 
 app = FastAPI(title="Simple Nutrition Backend")
 
@@ -15,6 +18,19 @@ DATA_DIR = Path("data")
 FOODS_FILE = DATA_DIR / "foods.json"
 REQUIREMENTS_FILE = DATA_DIR / "daily_requirements.json"
 MEAL_LOG_FILE = DATA_DIR / "meal_log.json"
+
+MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "gpt-oss-20b")
+MODEL_URL = os.getenv("MODEL_URL", "http://a5b3148f0995c48088e0800feaa2c651-1539933567.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1")
+SYSTEM_PROMPT = f"""
+You are helping a nutrition tracker analyze a meal photo.
+
+Return only valid JSON in this exact shape:
+
+Rules:
+- confidence must be between 0 and 1.
+- Return JSON only. No markdown.
+"""
+os.environ["OPENAI_API_KEY"] = "doesn't-matter"
 
 
 class MealItem(BaseModel):
@@ -123,14 +139,6 @@ def get_daily_summary(day: str) -> Dict[str, Any]:
     }
 
 
-@app.get("/")
-def health_check():
-    return {
-        "status": "ok",
-        "message": "Nutrition backend is running"
-    }
-
-
 @app.get("/api/health")
 def health_check():
     return {
@@ -187,3 +195,118 @@ def clear_logs():
     }
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
+
+import base64
+import json
+import os
+from fastapi import UploadFile, File, HTTPException
+from openai import OpenAI
+
+
+vlm_client = OpenAI(
+    api_key="EMPTY",
+    base_url=os.getenv("VLM_BASE_URL", "http://localhost:8001/v1")
+)
+
+## new code for v3
+
+mlflow.set_tracking_uri(MLFLOW_URL)
+mlflow.set_experiment(MLFLOW_EXPERIMENT)
+
+
+@app.post("/analyze-meal-image")
+@mlflow.trace(name="Analyze Image", attributes={"model": "Qwen2.5"})
+async def analyze_meal_image(file: UploadFile = File(...)):
+    foods = read_json(FOODS_FILE)
+
+    image_bytes = await file.read()
+    image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+
+    mime_type = file.content_type or "image/jpeg"
+    image_url = f"data:{mime_type};base64,{image_base64}"
+
+    allowed_foods = [
+        {
+            "food_id": food_id,
+            "name": food["name"]
+        }
+        for food_id, food in foods.items()
+    ]
+
+    completion = vlm_client.chat.completions.create(
+        model="Qwen/Qwen2.5-VL-7B-Instruct",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": SYSTEM_PROMPT
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": image_url
+                        }
+                    }
+                ]
+            }
+        ],
+        temperature=0,
+        max_tokens=700
+    )
+
+    raw_text = completion.choices[0].message.content
+
+    try:
+        result = json.loads(raw_text)
+    except json.JSONDecodeError:
+        raise HTTPException(
+            status_code=502,
+            detail={
+                "message": "Model did not return valid JSON",
+                "raw_output": raw_text
+            }
+        )
+
+    calculated_items = []
+
+    for item in result.get("items", []):
+        food_id = item.get("food_id")
+
+        if food_id not in foods:
+            continue
+
+        estimated_grams = float(item.get("estimated_grams", 0))
+
+        if estimated_grams <= 0:
+            continue
+
+        food = foods[food_id]
+
+        nutrients = scale_nutrients(
+            food["nutrients_per_100g"],
+            estimated_grams
+        )
+
+        calculated_items.append({
+            "food_id": food_id,
+            "name": food["name"],
+            "estimated_grams": estimated_grams,
+            "confidence": item.get("confidence"),
+            "reason": item.get("reason"),
+            "nutrients": nutrients
+        })
+
+    total_nutrients = {}
+
+    for item in calculated_items:
+        add_nutrients(total_nutrients, item["nutrients"])
+
+    return {
+        "message": "Meal image analyzed",
+        "items": calculated_items,
+        "total_nutrients": total_nutrients,
+        "note": "Ask the user to confirm or edit before logging."
+    }
