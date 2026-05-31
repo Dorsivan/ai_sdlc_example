@@ -16,8 +16,8 @@ FOODS_FILE = DATA_DIR / "foods.json"
 REQUIREMENTS_FILE = DATA_DIR / "daily_requirements.json"
 MEAL_LOG_FILE = DATA_DIR / "meal_log.json"
 
-MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "gpt-oss-20b")
-MODEL_URL = os.getenv("MODEL_URL", "http://a5b3148f0995c48088e0800feaa2c651-1539933567.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1")
+MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "Qwen2.5-VL-7B-Instruct")
+MODEL_URL = os.getenv("MODEL_URL", "http://ae8a9def8616e4e2381163e0b4d76aca-772845044.us-east-1.elb.amazonaws.com/nutrient-example/baseline-model/v1")
 SYSTEM_PROMPT = f"""
 You are helping a nutrition tracker analyze a meal photo.
 
@@ -202,9 +202,9 @@ from fastapi import UploadFile, File, HTTPException
 from openai import OpenAI
 
 
-vlm_client = OpenAI(
+client = OpenAI(
     api_key="EMPTY",
-    base_url=os.getenv("VLM_BASE_URL", "http://localhost:8001/v1")
+    base_url=MODEL_URL
 )
 
 
@@ -226,8 +226,8 @@ async def analyze_meal_image(file: UploadFile = File(...)):
         for food_id, food in foods.items()
     ]
 
-    completion = vlm_client.chat.completions.create(
-        model="Qwen/Qwen2.5-VL-7B-Instruct",
+    completion = client.chat.completions.create(
+        model="Qwen2.5-VL-7B-Instruct",
         messages=[
             {
                 "role": "user",
