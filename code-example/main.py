@@ -8,8 +8,10 @@ import mlflow
 from mlflow.entities import AssessmentSource, AssessmentSourceType
 
 
-MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "gpt-oss-20b")
-MODEL_URL = os.getenv("MODEL_URL", "http://a5b3148f0995c48088e0800feaa2c651-1539933567.us-east-2.elb.amazonaws.com/demo-llm/gpt-oss-20b/v1")
+# MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "gpt-oss-20b")
+MODEL_DEFAULT = "qwen2-5-0-5b-instruct"
+MODEL_URL = os.getenv("MODEL_URL", "http://ae8a9def8616e4e2381163e0b4d76aca-772845044.us-east-1.elb.amazonaws.com/nutrient-example/baseline-model/v1")
+# MODEL_URL = os.getenv("MODEL_URL", "http://ae8a9def8616e4e2381163e0b4d76aca-772845044.us-east-1.elb.amazonaws.com/demo-llm/gpt-oss-20b")
 SYSTEM_PROMPT = "You are an assistant that receives questions from a user using a terminal. As such, you answers are displayed in the terminal, and are expected to be mostly short, concise and not use formats like .md"
 os.environ["OPENAI_API_KEY"] = "doesn't-matter"
 

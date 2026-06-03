@@ -1,0 +1,82 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-model
+  namespace: nutrient-example
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: hf-model-downloader
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: downloader
+          image: quay.io/rh-ee-dsivan/ai_sdlc_example/pvc_model_downloder:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MODEL_ID
+              value: RedHatAI/gpt-oss-20b
+
+            - name: MODELS_ROOT
+              value: /mnt/models
+
+            # Optional. If omitted, the script uses RedHatAI__gpt-oss-20b.
+            - name: MODEL_DIR_NAME
+              value: stored_model
+
+            # Important in your case.
+            - name: HF_HUB_DISABLE_XET
+              value: "1"
+
+            # More realistic than the HF defaults in enterprise networks.
+            - name: HF_HUB_DOWNLOAD_TIMEOUT
+              value: "86400"
+
+            - name: HF_HUB_ETAG_TIMEOUT
+              value: "86400"
+
+            - name: HF_HUB_VERBOSITY
+              value: "info"
+
+            - name: HF_MAX_RETRIES
+              value: "5"
+
+            - name: HF_RETRY_SLEEP_SECONDS
+              value: "30"
+
+            - name: HOME
+              value: /tmp
+
+            - name: TMPDIR
+              value: /tmp
+
+            - name: HF_HOME
+              value: /tmp/.cache/huggingface
+
+          volumeMounts:
+            - name: model-pvc
+              mountPath: /mnt/models
+
+          resources:
+            requests:
+              cpu: "1"
+              memory: 2Gi
+            limits:
+              cpu: "4"
+              memory: 8Gi
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+
+      volumes:
+        - name: model-pvc
+          persistentVolumeClaim:
+            claimName: gpt-oss-20b-model-pvc

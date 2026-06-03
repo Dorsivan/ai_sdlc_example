@@ -87,7 +87,7 @@ spec:
       - name: main
         env:
           - name: VLLM_ADDITIONAL_ARGS
-            value: "--disable-uvicorn-access-log --max-model-len=16000"
+            value: "--disable-uvicorn-access-log --max-model-len=16000 --gpu-memory-utilization=0.25"
         resources:
           limits:
             cpu: '1'

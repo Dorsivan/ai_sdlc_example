@@ -16,8 +16,9 @@ metadata:
 spec:
   replicas:
   model:
-    uri: hf://RedHatAI/gpt-oss-20b
-    name: gpt-oss-20b
+    # uri: hf://RedHatAI/gpt-oss-20b
+    uri: pvc://tinyllama-1.1b-pvc/stored_model/
+    name: TinyLlama-1.1B-Chat-v1.0
   router:
     scheduler:
       template:
@@ -87,7 +88,7 @@ spec:
       - name: main
         env:
           - name: VLLM_ADDITIONAL_ARGS
-            value: "--disable-uvicorn-access-log --max-model-len=16000"
+            value: "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.25"
         resources:
           limits:
             cpu: '1'
