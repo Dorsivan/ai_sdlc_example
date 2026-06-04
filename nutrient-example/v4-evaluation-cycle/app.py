@@ -36,6 +36,14 @@ Rules:
 os.environ["OPENAI_API_KEY"] = "doesn't-matter"
 
 
+def register_system_prompt():
+    prompt = mlflow.genai.register_prompt(
+        name="meal-analysis-prompt",
+        template=SYSTEM_PROMPT,
+    )
+    return prompt
+
+
 class MealItem(BaseModel):
     food_id: str = Field(..., example="banana")
     grams: float = Field(..., gt=0, example=120)
@@ -221,6 +229,7 @@ vlm_client = OpenAI(
 
 mlflow.set_tracking_uri(MLFLOW_URL)
 mlflow.set_experiment(MLFLOW_EXPERIMENT)
+register_system_prompt()
 
 
 @app.post("/analyze-meal-image")
@@ -250,7 +259,7 @@ async def analyze_meal_image(file: UploadFile = File(...)):
                 "content": [
                     {
                         "type": "text",
-                        "text": SYSTEM_PROMPT
+                        "text": mlflow.genai.load_prompt(name_or_uri="prompts:/meal-analysis-prompt@latest").format()
                     },
                     {
                         "type": "image_url",
