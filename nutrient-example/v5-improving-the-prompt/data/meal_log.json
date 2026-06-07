@@ -1,0 +1,62 @@
+[
+  {
+    "id": "19c64db3-4c10-4213-979a-b8ffbdc9643f",
+    "meal_name": "Breakfast",
+    "eaten_on": "2026-05-25",
+    "items": [
+      {
+        "food_id": "rice_cooked",
+        "name": "Cooked white rice",
+        "grams": 50.0,
+        "nutrients": {
+          "calories_kcal": 65.0,
+          "protein_g": 1.2,
+          "carbs_g": 14.1,
+          "fat_g": 0.15,
+          "fiber_g": 0.2,
+          "iron_mg": 0.1,
+          "calcium_mg": 5.0
+        }
+      }
+    ],
+    "total_nutrients": {
+      "calories_kcal": 65.0,
+      "protein_g": 1.2,
+      "carbs_g": 14.1,
+      "fat_g": 0.15,
+      "fiber_g": 0.2,
+      "iron_mg": 0.1,
+      "calcium_mg": 5.0
+    }
+  },
+  {
+    "id": "8a342889-5e82-4851-b129-8fc636632719",
+    "meal_name": "Lunch",
+    "eaten_on": "2026-05-25",
+    "items": [
+      {
+        "food_id": "rice_cooked",
+        "name": "Cooked white rice",
+        "grams": 500.0,
+        "nutrients": {
+          "calories_kcal": 650.0,
+          "protein_g": 12.0,
+          "carbs_g": 141.0,
+          "fat_g": 1.5,
+          "fiber_g": 2.0,
+          "iron_mg": 1.0,
+          "calcium_mg": 50.0
+        }
+      }
+    ],
+    "total_nutrients": {
+      "calories_kcal": 650.0,
+      "protein_g": 12.0,
+      "carbs_g": 141.0,
+      "fat_g": 1.5,
+      "fiber_g": 2.0,
+      "iron_mg": 1.0,
+      "calcium_mg": 50.0
+    }
+  }
+]

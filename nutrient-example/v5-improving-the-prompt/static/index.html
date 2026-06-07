@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Groovy Nutrition Tracker</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero-card">
+      <div>
+        <p class="eyebrow">Daily nutrition tracker</p>
+        <h1>What did you eat today?</h1>
+        <p class="subtitle">
+          Log your meals, calculate nutrients, and compare them against your daily targets.
+        </p>
+      </div>
+
+      <div class="date-box">
+        <label for="eatenOn">Date</label>
+        <input type="date" id="eatenOn" />
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="card">
+        <h2>Log a meal</h2>
+
+        <label for="mealName">Meal name</label>
+        <input id="mealName" placeholder="Breakfast, Lunch, Snack..." />
+
+        <div class="food-row">
+          <div>
+            <label for="foodSelect">Food</label>
+            <select id="foodSelect"></select>
+          </div>
+
+          <div>
+            <label for="gramsInput">Grams</label>
+            <input id="gramsInput" type="number" min="1" placeholder="100" />
+          </div>
+
+          <button id="addItemBtn" class="secondary-btn">Add</button>
+        </div>
+
+        <div>
+          <h3>Meal items</h3>
+          <ul id="mealItemsList" class="meal-list"></ul>
+        </div>
+
+        <button id="logMealBtn" class="primary-btn">Log meal</button>
+
+        <p id="statusMessage" class="status"></p>
+      </section>
+
+      <section class="card">
+        <div class="summary-header">
+          <h2>Daily summary</h2>
+          <button id="refreshSummaryBtn" class="secondary-btn">Refresh</button>
+        </div>
+
+        <div id="summaryContainer" class="summary-container">
+          <p class="empty-state">No summary loaded yet.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
