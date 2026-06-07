@@ -16,8 +16,8 @@ metadata:
 spec:
   replicas:
   model:
-    uri: hf://Qwen/Qwen2.5-VL-7B-Instruct
-    name: qwen2.5-vl
+    uri: pvc://nutrient-model/stored_model/
+    name: qwen2-5-0-5b-instruct
   router:
     scheduler:
       template:
@@ -87,7 +87,7 @@ spec:
       - name: main
         env:
           - name: VLLM_ADDITIONAL_ARGS
-            value: "--disable-uvicorn-access-log --max-model-len=16000 --gpu-memory-utilization=0.25"
+            value: "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.5"
         resources:
           limits:
             cpu: '1'
