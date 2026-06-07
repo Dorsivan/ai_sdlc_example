@@ -1,0 +1,50 @@
+{
+  "banana": {
+    "name": "Banana",
+    "nutrients_per_100g": {
+      "calories_kcal": 89,
+      "protein_g": 1.1,
+      "carbs_g": 22.8,
+      "fat_g": 0.3,
+      "fiber_g": 2.6,
+      "iron_mg": 0.3,
+      "calcium_mg": 5
+    }
+  },
+  "tofu": {
+    "name": "Tofu",
+    "nutrients_per_100g": {
+      "calories_kcal": 144,
+      "protein_g": 15.7,
+      "carbs_g": 3.9,
+      "fat_g": 8.7,
+      "fiber_g": 2.3,
+      "iron_mg": 2.7,
+      "calcium_mg": 350
+    }
+  },
+  "rice_cooked": {
+    "name": "Cooked white rice",
+    "nutrients_per_100g": {
+      "calories_kcal": 130,
+      "protein_g": 2.4,
+      "carbs_g": 28.2,
+      "fat_g": 0.3,
+      "fiber_g": 0.4,
+      "iron_mg": 0.2,
+      "calcium_mg": 10
+    }
+  },
+  "lentils_cooked": {
+    "name": "Cooked lentils",
+    "nutrients_per_100g": {
+      "calories_kcal": 116,
+      "protein_g": 9.0,
+      "carbs_g": 20.1,
+      "fat_g": 0.4,
+      "fiber_g": 7.9,
+      "iron_mg": 3.3,
+      "calcium_mg": 19
+    }
+  }
+}

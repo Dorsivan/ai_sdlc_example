@@ -1,0 +1,22 @@
+{
+  "models": [
+    {
+      "id": "qwen-0.5b",
+      "hf_endpoint": "Qwen/Qwen2.5-0.5B-Instruct",
+      "display_name": "Qwen 2.5 0.5B",
+      "pvc_name": "nutrient-model-qwen-0.5b",
+      "model_name_in_api": "qwen2-5-0-5b-instruct",
+      "service_name": "baseline-model",
+      "vllm_args": "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.5"
+    },
+    {
+      "id": "qwen-1.5b",
+      "hf_endpoint": "Qwen/Qwen2.5-1.5B-Instruct",
+      "display_name": "Qwen 2.5 1.5B",
+      "pvc_name": "nutrient-model-qwen-1.5b",
+      "model_name_in_api": "qwen2-5-1.5b-instruct",
+      "service_name": "baseline-model",
+      "vllm_args": "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.7"
+    }
+  ]
+}
