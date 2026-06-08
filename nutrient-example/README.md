@@ -4,4 +4,3 @@ Possible chapters to add:
 - Implementing guardrails
 - Weaving actual pictures into the examples
 - Conversation state
-- 
