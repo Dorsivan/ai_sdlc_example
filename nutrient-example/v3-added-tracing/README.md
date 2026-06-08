@@ -2,48 +2,25 @@
 
 ---
 
-## Basic AI Usage
+## Working Towards Improvement
 
-NutriComp is happy to announce first usage of AI! The code now also allows the users the upload a picture, it then sends this picture to a model, alongside a basic prompt, explaining the role of the model, and requesting it to return whatever foods it believes it had found.
+While implementing AI into their system, NutriTrack still does not have proper monitoring and tracing for their applications. They have logs, sure, but users report of slower responses from the model, and they have no idea how much tokens they track. They would also like to improve their accuracy, and need a proper method of measuring it.
+
+## MLflow
+
+MLflow is a tool that helps you debug, evaluate and monitor your LLM applications, agents and models. It is officialy a part of Red Hat OpenShift AI (version 3.4 and onwards). With some basic additions to your code, it helps you get the full picture of what is going on in your applications.
 
 ## What Was Added?
 
-The main change now resides in the model directory, where we now have an LLMInferenceService object described in a yaml file. This file will deploy a <PLACEHOLDER> model, that is able to receive communication from the application.
-
-It also adds an integration to the model in the application code, mainly:
-
-```
-    completion = client.chat.completions.create(
-        model="Qwen2.5-VL-7B-Instruct",
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": SYSTEM_PROMPT
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": image_url
-                        }
-                    }
-                ]
-            }
-        ],
-        temperature=0,
-        max_tokens=700
-    )
-```
-
-Which shows what communication with an Open-AI compatible endpoint looks like.
+MLflow can now be enabled as a part of RHOAI, you can access it in: <rhoai_url>/models
+You can notice that the main functions in app.py now have a tracing header. Run the code, log into mlflow, and check out the new information!
 
 ---
 
 ## Running this version
 
 ```bash
+enable mlflowoperator <PLACEHOLDER>
 cd nutrient-example/v1-no_model
 oc apply -f model/llm-infra.yaml
 python -m venv .venv && source .venv/bin/activate
