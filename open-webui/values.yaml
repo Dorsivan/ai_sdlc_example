@@ -1,0 +1,72 @@
+# Example values.yaml overrides (refer to chart documentation for full schema)
+replicaCount: 1
+
+# -- Database: use an external PostgreSQL instance
+databaseUrl: "postgresql://appuser:appuser@postgres.open-webui.svc.cluster.local:5432/openwebui"
+
+# -- WebSocket & Redis: the chart can auto-deploy Redis in-cluster,
+#    or you can point to an external Redis instance via websocket.url
+websocket:
+  enabled: false
+  manager: redis
+  # url: "redis://my-external-redis:6379/0"  # uncomment to use external Redis
+  redis:
+    enabled: true  # set to false if using external Redis
+
+# -- Tika: the chart can auto-deploy Tika in-cluster
+tika:
+  enabled: true
+
+# -- Ollama: disable if using external model APIs or a separate Ollama deployment
+ollama:
+  enabled: false
+
+# -- Storage: use object storage instead of local PVC for multi-replica
+persistence:
+  # provider: s3  # or "gcs" / "azure"
+  # s3:
+  #   bucket: "my-openwebui-bucket"
+  #   region: "us-east-1"
+  #   accessKeyExistingSecret: "openwebui-s3-creds"
+  #   accessKeyExistingAccessKey: "access-key"
+  #   secretKeyExistingSecret: "openwebui-s3-creds"
+  #   secretKeyExistingSecretKey: "secret-key"
+  # -- Alternatively, use a shared filesystem (RWX PVC) instead of object storage:
+  provider: local
+  accessModes:
+    - ReadWriteOnce
+  storageClass: "gp3-csi"
+
+# -- Ingress: configure if exposing via an ingress controller
+ingress:
+  enabled: false
+  class: "nginx"
+  host: "ai.example.com"
+  tls: true
+  existingSecret: "openwebui-tls"
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "open-webui-session"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+
+# -- Remaining settings that don't have dedicated chart values
+extraEnvVars:
+  - name: WEBUI_SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: openwebui-secrets
+        key: secret-key
+  - name: VECTOR_DB
+    value: "pgvector"
+  - name: PGVECTOR_DB_URL
+    valueFrom:
+      secretKeyRef:
+        name: openwebui-secrets
+        key: database-url
+  - name: UVICORN_WORKERS
+    value: "1"
+  - name: ENABLE_DB_MIGRATIONS
+    value: "true"
+  - name: RAG_EMBEDDING_ENGINE
+    value: "openai"

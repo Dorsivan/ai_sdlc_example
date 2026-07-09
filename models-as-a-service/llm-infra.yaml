@@ -1,23 +1,24 @@
 apiVersion: serving.kserve.io/v1alpha1
 kind: LLMInferenceService
 metadata:
-  name: baseline-model
-  namespace: nutrient-example
+  name: gpt-oss-20b
+  namespace: demo-llm
   annotations:
     opendatahub.io/hardware-profile-name: gpu-profile
     opendatahub.io/hardware-profile-namespace: redhat-ods-applications
     opendatahub.io/model-type: generative
-    openshift.io/display-name: qwen2.5-vl
+    openshift.io/display-name: gpt-oss-20b
     security.opendatahub.io/enable-auth: 'false'
     opendatahub.io/genai-use-case: agent
   labels:
     opendatahub.io/genai-asset: 'true'
     opendatahub.io/dashboard: 'true'
 spec:
-  replicas: 0
+  replicas: 1
   model:
-    uri: pvc://qwen-0.5b-pvc/stored_model/
-    name: qwen2-5-0-5b-instruct
+    uri: hf://RedHatAI/gpt-oss-20b
+    # uri: pvc://tinyllama-1.1b-pvc/stored_model/
+    name: gpt-oss-20b
   router:
     scheduler:
       template:
@@ -77,17 +78,20 @@ spec:
           - name: cachi2-cache
             emptyDir: {} 
     route: { }
-    gateway: { }
+    gateway:
+      refs:
+        - name: maas-default-gateway
+          namespace: openshift-ingress
   template:
     tolerations:
-      - key: "nvidia.com/gpu.present"
+      - key: "nvidia.com/gpu"
         operator: "Exists"
         effect: "NoSchedule"
     containers:
       - name: main
         env:
           - name: VLLM_ADDITIONAL_ARGS
-            value: "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.5"
+            value: "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.8"
         resources:
           limits:
             cpu: '1'

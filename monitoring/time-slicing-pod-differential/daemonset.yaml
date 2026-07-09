@@ -1,0 +1,220 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: gpu-pod-monitor
+  namespace: dor-monitoring-trial
+  labels:
+    app: gpu-pod-monitor
+spec:
+  selector:
+    matchLabels:
+      app: gpu-pod-monitor
+  template:
+    metadata:
+      labels:
+        app: gpu-pod-monitor
+    spec:
+      serviceAccountName: gpu-pod-monitor
+      hostPID: true
+      nodeSelector:
+        nvidia.com/gpu.present: "true"  # Only schedule on GPU nodes
+      containers:
+      - name: gpu-collector
+        image: nvidia/cuda:12.3.0-base-ubuntu22.04
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y curl
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x kubectl
+            mv kubectl /usr/local/bin/
+            chmod +x /scripts/gpu-mapping-script.sh
+            while true; do
+              /scripts/gpu-mapping-script.sh
+              sleep 15
+            done
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - name: proc
+          mountPath: /proc
+          readOnly: true
+        - name: scripts
+          mountPath: /scripts
+        - name: metrics-data
+          mountPath: /tmp
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+
+      - name: prometheus-exporter
+        image: quay.io/rh-ee-dsivan/gpu-monitoring/exporter:latest
+        ports:
+        - containerPort: 8080
+          name: metrics
+          protocol: TCP
+        volumeMounts:
+        - name: metrics-data
+          mountPath: /tmp
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+      volumes:
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: scripts
+        configMap:
+          name: gpu-monitoring-scripts
+          defaultMode: 0755
+      - name: metrics-data
+        emptyDir: {}
+
+      tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gpu-monitoring-scripts
+  namespace: dor-monitoring-trial
+data:
+  gpu-mapping-script.sh: |
+    #!/bin/bash
+
+    # Output JSON format for Prometheus exporter
+    # Format: {"pid": "123", "namespace": "default", "pod": "pod-name", "gpu_id": "0", "gpu_memory_mb": "1024", "node": "node-1"}
+
+    OUTPUT_FILE="/tmp/gpu_metrics.json"
+    NODE_NAME=${NODE_NAME:-$(hostname)}
+
+    echo "[" > "$OUTPUT_FILE"
+
+    # Grab all currently active GPU processes with GPU ID and memory
+    nvidia_output=$(nvidia-smi --query-compute-apps=pid,used_gpu_memory,gpu_uuid --format=csv,noheader,nounits 2>/dev/null)
+
+    first=true
+    while IFS=, read -r pid mem gpu_uuid; do
+        # Trim whitespace
+        pid=$(echo "$pid" | xargs)
+        mem=$(echo "$mem" | xargs)
+        gpu_uuid=$(echo "$gpu_uuid" | xargs)
+
+        # Get GPU ID from UUID
+        gpu_id=$(nvidia-smi --query-gpu=index,gpu_uuid --format=csv,noheader | grep "$gpu_uuid" | cut -d',' -f1 | xargs)
+
+        # Locate the K8s cgroup definition
+        cgroup=$(cat /proc/$pid/cgroup 2>/dev/null | grep "kubepods" | head -n 1)
+
+        namespace="unknown"
+        pod_name="unknown"
+
+        if [ ! -z "$cgroup" ]; then
+            # Extract Pod UID and swap systemd underscores back to standard dashes
+            pod_uid=$(echo "$cgroup" | grep -o 'pod[a-f0-9_\-]*' | sed 's/pod//' | tr '_' '-')
+
+            if [ ! -z "$pod_uid" ]; then
+                # Match UID against the K8s API
+                pod_info=$(kubectl get pods -A -o jsonpath="{range .items[?(@.metadata.uid=='$pod_uid')]}{.metadata.namespace}{'|'}{.metadata.name}{end}" 2>/dev/null)
+                if [ ! -z "$pod_info" ]; then
+                    namespace=$(echo "$pod_info" | cut -d'|' -f1)
+                    pod_name=$(echo "$pod_info" | cut -d'|' -f2)
+                fi
+            fi
+        fi
+
+        # Build JSON object
+        if [ "$first" = true ]; then
+            first=false
+        else
+            echo "," >> "$OUTPUT_FILE"
+        fi
+
+        cat >> "$OUTPUT_FILE" <<EOF
+      {
+        "pid": "$pid",
+        "namespace": "$namespace",
+        "pod": "$pod_name",
+        "gpu_id": "$gpu_id",
+        "gpu_memory_mb": "$mem",
+        "node": "$NODE_NAME"
+      }
+    EOF
+
+    done <<< "$nvidia_output"
+
+    echo "" >> "$OUTPUT_FILE"
+    echo "]" >> "$OUTPUT_FILE"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gpu-pod-monitor
+  namespace: dor-monitoring-trial
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: gpu-pod-monitor
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: gpu-pod-monitor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: gpu-pod-monitor
+subjects:
+- kind: ServiceAccount
+  name: gpu-pod-monitor
+  namespace: dor-monitoring-trial
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gpu-pod-monitor
+  namespace: dor-monitoring-trial
+  labels:
+    app: gpu-pod-monitor
+spec:
+  selector:
+    app: gpu-pod-monitor
+  ports:
+  - name: metrics
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  clusterIP: None  # Headless service for DaemonSet

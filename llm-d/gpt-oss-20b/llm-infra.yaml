@@ -14,11 +14,11 @@ metadata:
     opendatahub.io/genai-asset: 'true'
     opendatahub.io/dashboard: 'true'
 spec:
-  replicas:
+  replicas: 0
   model:
-    # uri: hf://RedHatAI/gpt-oss-20b
-    uri: pvc://tinyllama-1.1b-pvc/stored_model/
-    name: TinyLlama-1.1B-Chat-v1.0
+    uri: hf://RedHatAI/gpt-oss-20b
+    # uri: pvc://tinyllama-1.1b-pvc/stored_model/
+    name: gpt-oss-20b
   router:
     scheduler:
       template:
@@ -88,7 +88,7 @@ spec:
       - name: main
         env:
           - name: VLLM_ADDITIONAL_ARGS
-            value: "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.25"
+            value: "--disable-uvicorn-access-log --max-model-len=2000 --gpu-memory-utilization=0.8"
         resources:
           limits:
             cpu: '1'

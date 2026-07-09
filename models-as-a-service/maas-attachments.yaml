@@ -1,0 +1,69 @@
+# ============================================================================
+# Models-as-a-Service (MaaS) attachments for the gpt-oss-20b LLMInferenceService
+# ----------------------------------------------------------------------------
+# Three resources wire the existing `gpt-oss-20b` LLMInferenceService
+# (namespace: demo-llm) into the MaaS tenant `default-tenant`
+# (namespace: models-as-a-service, gateway: maas-default-gateway):
+#
+#   1. MaaSModelRef      - exposes the model through the MaaS gateway. MUST live
+#                          in the SAME namespace as the LLMInferenceService, so
+#                          this one goes in `demo-llm`. Its .spec.modelRef has no
+#                          namespace field; it is always same-namespace.
+#   2. MaaSSubscription  - grants a set of subjects access + token rate limits.
+#                          Lives in the tenant namespace `models-as-a-service`
+#                          and references the model by name + namespace.
+#   3. MaaSAuthPolicy    - the auth policy that gates who may call the model.
+#                          Also in `models-as-a-service`.
+#
+# Values you will likely want to tweak (mirrored from the existing
+# demo-subscription example): the owner/subject group `rhods-admins`, the
+# subscription `priority`, and the token rate limits.
+# ============================================================================
+---
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSModelRef
+metadata:
+  name: gpt-oss-20b
+  namespace: demo-llm
+  annotations:
+    openshift.io/display-name: gpt-oss-20b
+spec:
+  modelRef:
+    kind: LLMInferenceService
+    name: gpt-oss-20b
+---
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSSubscription
+metadata:
+  name: gpt-oss-20b-subscription
+  namespace: models-as-a-service
+  annotations:
+    openshift.io/display-name: gpt-oss-20b-subscription
+spec:
+  modelRefs:
+    - name: gpt-oss-20b
+      namespace: demo-llm
+      tokenRateLimits:
+        - limit: 2000
+          window: 1h
+        - limit: 1000
+          window: 30m
+  owner:
+    groups:
+      - name: rhods-admins
+  priority: 10
+---
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSAuthPolicy
+metadata:
+  name: gpt-oss-20b-subscription-policy
+  namespace: models-as-a-service
+  annotations:
+    openshift.io/description: Auth policy created for subscription "gpt-oss-20b-subscription"
+spec:
+  modelRefs:
+    - name: gpt-oss-20b
+      namespace: demo-llm
+  subjects:
+    groups:
+      - name: rhods-admins

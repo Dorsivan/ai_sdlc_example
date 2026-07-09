@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: llm-scheduler-pods
+  namespace: demo-llm
+  labels:
+    app: llm-inference
+    component: llm-d-scheduler
+spec:
+  # Alternative approach: monitor scheduler pods directly
+  selector:
+    matchLabels:
+      component.opendatahub.io/name: scheduler
+      serving.kserve.io/inferenceservice: gpt-oss-20b
+  namespaceSelector:
+    matchNames:
+      - demo-llm
+  podMetricsEndpoints:
+    # Monitor the scheduler container's metrics port
+    - port: metrics  # Or the actual port name/number
+      path: /metrics
+      scheme: https
+      interval: 30s
+      tlsConfig:
+        insecureSkipVerify: true
+      relabelings:
+        # Add pod-level labels
+        - sourceLabels: [__meta_kubernetes_pod_name]
+          targetLabel: pod
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          targetLabel: node

@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: gpt-oss-20b-vllm
+  namespace: demo-llm
+  labels:
+    # Helps you find/group this monitor; not functionally required.
+    serving.kserve.io/inferenceservice: gpt-oss-20b
+spec:
+  # VERIFY (1): selector must match the labels on the KServe-created Service.
+  # After deploying, run:
+  #   oc -n demo-llm get svc -l serving.kserve.io/inferenceservice=gpt-oss-20b --show-labels
+  selector:
+    matchLabels:
+      serving.kserve.io/inferenceservice: gpt-oss-20b
+  namespaceSelector:
+    matchNames:
+      - demo-llm
+  endpoints:
+    # VERIFY (2): "port" is the NAME (not number) of the Service port mapping to
+    # container port 8000. Confirm with:
+    #   oc -n demo-llm get svc <name> -o jsonpath='{.spec.ports[*].name}'
+    - port: http1
+      path: /metrics
+      scheme: https            # vLLM serves TLS on 8000 (matches the liveness probe)
+      interval: 30s
+      scrapeTimeout: 10s
+      tlsConfig:
+        insecureSkipVerify: true   # internal self-signed serving cert

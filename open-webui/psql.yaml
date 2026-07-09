@@ -1,0 +1,179 @@
+# ============================================================================
+# PostgreSQL with SSL on OpenShift
+# ----------------------------------------------------------------------------
+# Design notes (the OpenShift-specific bits that usually trip people up):
+#
+#  * Image: the Red Hat / sclorg PostgreSQL image is used instead of the
+#    upstream `postgres` image. It is built to run under an ARBITRARY UID
+#    (group 0), which is exactly what the default restricted-v2 SCC injects.
+#    The upstream image hard-codes UID 999 and fights OpenShift's random UID.
+#    Public alternative (no Red Hat pull secret needed):
+#        quay.io/sclorg/postgresql-16-c9s:latest
+#
+#  * NO runAsUser / fsGroup is hard-coded. OpenShift assigns both from the
+#    namespace's allocated range; pinning them usually breaks SCC admission.
+#
+#  * TLS cert/key are minted automatically by the OpenShift service-CA
+#    operator (the annotation on the Service below). No manual openssl, and
+#    the cert is valid for  postgres.<namespace>.svc[.cluster.local].
+#
+#  * PostgreSQL refuses to start if the private key is group/world readable.
+#    A mounted Secret is owned by root and is read-only, so an initContainer
+#    copies the pair into an emptyDir owned by the runtime UID and chmods the
+#    key to 0600. This sidesteps all fsGroup-vs-secret-permission headaches.
+# ============================================================================
+# ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql
+  labels:
+    app: postgres
+type: Opaque
+stringData:
+  database-name: openwebui
+  database-user: appuser
+  database-password: "appuser"
+  admin-password: "CHANGE_ME_strong_admin_password"
+---
+# Extra postgresql.conf snippet. The RH/sclorg image automatically includes
+# every *.conf file found in /opt/app-root/src/postgresql-cfg/ .
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-ssl-config
+  labels:
+    app: postgres
+data:
+  ssl.conf: |
+    ssl = on
+    ssl_cert_file = '/opt/app-root/src/certs/tls.crt'
+    ssl_key_file  = '/opt/app-root/src/certs/tls.key'
+    # ssl_min_protocol_version = 'TLSv1.2'
+---
+# Headless Service: gives the StatefulSet a stable DNS name AND triggers the
+# service-CA operator to write tls.crt/tls.key into the secret named below.
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: postgres-serving-cert
+spec:
+  clusterIP: None
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      initContainers:
+        - name: prepare-certs
+          image: registry.redhat.io/rhel9/postgresql-16:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              cp /tmp/serving-cert/tls.crt /opt/app-root/src/certs/tls.crt
+              cp /tmp/serving-cert/tls.key /opt/app-root/src/certs/tls.key
+              chmod 0644 /opt/app-root/src/certs/tls.crt
+              chmod 0600 /opt/app-root/src/certs/tls.key
+          volumeMounts:
+            - name: serving-cert
+              mountPath: /tmp/serving-cert
+              readOnly: true
+            - name: certs
+              mountPath: /opt/app-root/src/certs
+      containers:
+        - name: postgresql
+          image: registry.redhat.io/rhel9/postgresql-16:latest
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-name
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-user
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-password
+            - name: POSTGRESQL_ADMIN_PASSWORD
+              value: admin
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/pgsql/data
+            - name: certs
+              mountPath: /opt/app-root/src/certs
+              readOnly: true
+            - name: ssl-config
+              mountPath: /opt/app-root/src/postgresql-cfg
+              readOnly: true
+          readinessProbe:
+            exec:
+              command: ["/usr/libexec/check-container"]
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/usr/libexec/check-container", "--live"]
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: serving-cert
+          secret:
+            secretName: postgres-serving-cert
+            defaultMode: 0644
+        - name: certs
+          emptyDir: {}
+        - name: ssl-config
+          configMap:
+            name: postgres-ssl-config
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi

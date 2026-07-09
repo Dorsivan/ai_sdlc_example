@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: llm-scheduler-metrics
+  namespace: demo-llm
+  labels:
+    app: llm-inference
+    component: llm-d-scheduler
+spec:
+  # Matches the llm-d scheduler/router Service
+  selector:
+    matchLabels:
+      component.opendatahub.io/name: scheduler
+      serving.kserve.io/inferenceservice: gpt-oss-20b
+  namespaceSelector:
+    matchNames:
+      - demo-llm
+  endpoints:
+    # llm-d scheduler metrics endpoint
+    # The scheduler exposes metrics on its main gRPC port or a dedicated metrics port
+    - port: grpc  # Adjust if there's a dedicated metrics port
+      path: /metrics
+      scheme: https
+      interval: 30s
+      scrapeTimeout: 10s
+      tlsConfig:
+        insecureSkipVerify: true
+      metricRelabelings:
+        # Add source label to distinguish llm-d metrics
+        - sourceLabels: [__name__]
+          targetLabel: metrics_source
+          replacement: llm-d-scheduler

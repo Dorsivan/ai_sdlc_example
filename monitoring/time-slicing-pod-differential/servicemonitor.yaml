@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: gpu-pod-monitor
+  namespace: dor-monitoring-trial
+  labels:
+    app: gpu-pod-monitor
+spec:
+  selector:
+    matchLabels:
+      app: gpu-pod-monitor
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics

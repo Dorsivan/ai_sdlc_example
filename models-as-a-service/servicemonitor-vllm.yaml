@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: llm-vllm-metrics
+  namespace: demo-llm
+  labels:
+    app: llm-inference
+    component: vllm
+spec:
+  # Matches the KServe-created Service for the inference pods
+  selector:
+    matchLabels:
+      serving.kserve.io/inferenceservice: gpt-oss-20b
+  namespaceSelector:
+    matchNames:
+      - demo-llm
+  endpoints:
+    # vLLM metrics endpoint on the main inference container
+    - port: http1  # Service port name for container port 8000
+      path: /metrics
+      scheme: https
+      interval: 30s
+      scrapeTimeout: 10s
+      tlsConfig:
+        insecureSkipVerify: true  # Accept self-signed certs
+      metricRelabelings:
+        # Add source label to distinguish vLLM metrics
+        - sourceLabels: [__name__]
+          targetLabel: metrics_source
+          replacement: vllm
