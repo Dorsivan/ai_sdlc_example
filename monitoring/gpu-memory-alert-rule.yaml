@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: gpu-memory-alerts
+  namespace: openshift-user-workload-monitoring
+spec:
+  groups:
+    - name: gpu-memory-warnings
+      interval: 30s
+      rules:
+        - alert: GPUMemoryAvailableBelowZero
+          expr: |
+            DCGM_FI_DEV_FB_USED - on(namespace, pod) (10220 + (8960 * vllm:kv_cache_usage_perc)) < 0
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "GPU memory available is below zero for {{ $labels.namespace }}/{{ $labels.pod }}"
+            description: "GPU memory available calculation is negative ({{ $value }} MB) for pod {{ $labels.pod }} in namespace {{ $labels.namespace }}. This indicates the KV cache usage has exceeded available GPU framebuffer memory."
+            runbook_url: "https://your-runbook-url/gpu-memory-below-zero"

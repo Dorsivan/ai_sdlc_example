@@ -1,0 +1,19 @@
+# Systemd service file for the proxy
+# Save as: /etc/systemd/system/anthropic-proxy.service
+
+[Unit]
+Description=Anthropic to OpenAI Protocol Translator Proxy
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/path/to/your/endpoints
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+ExecStart=/usr/bin/python3 /path/to/your/endpoints/anthropic_to_openai_proxy.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

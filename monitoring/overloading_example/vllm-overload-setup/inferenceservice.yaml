@@ -1,0 +1,60 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: LLMInferenceService
+metadata:
+  name: vllm-overload-test
+  namespace: vllm-test
+spec:
+  model:
+    # Using a very small model to minimize baseline VRAM usage
+    # This allows us to observe the actual overload progression during load testing
+    uri: hf://TinyLlama/TinyLlama-1.1B-Chat-v1.0
+    name: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  replicas: 1
+  template:
+    containers:
+    - name: main
+      image: vllm/vllm-openai:latest
+      args:
+        # Start with minimal VRAM allocation to establish low baseline
+        # The small model + low utilization leaves room for KV cache growth
+        # Load testing will push KV cache beyond this limit to trigger overload
+        - --gpu-memory-utilization=0.30  # Low initial allocation
+        - --max-model-len=8192            # Large context window for KV cache growth
+        - --max-num-seqs=128              # Allows concurrent sequences
+        - --max-num-batched-tokens=8192   # Batching capacity
+        - --enforce-eager                 # Disable CUDA graphs for simplicity
+        - --disable-log-stats             # Reduce logging overhead
+        - --swap-space=0                  # CRITICAL: No CPU offload = hard OOM on VRAM exhaustion
+      env:
+        - name: HUGGING_FACE_HUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hf-token
+              key: token
+              optional: true
+      resources:
+        requests:
+          cpu: "4"
+          memory: "8Gi"
+          nvidia.com/gpu: "1"
+        limits:
+          cpu: "8"
+          memory: "12Gi"
+          nvidia.com/gpu: "1"
+      volumeMounts:
+        - name: shm
+          mountPath: /dev/shm
+    volumes:
+      - name: shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 2Gi
+  router:
+    gateway: {}
+    route: {}
+    scheduler: {}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vllm-test

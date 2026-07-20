@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vllm-test-scenarios
+  namespace: vllm-test
+data:
+  scenario1.sh: |
+    #!/bin/bash
+    # Scenario 1: Burst Load - Sudden spike of requests
+    echo "Scenario 1: Burst Load"
+    python3 load_tester.py \
+      --url $VLLM_URL \
+      --requests 100 \
+      --concurrency 50 \
+      --prompt-length 4000 \
+      --max-tokens 512
+
+  scenario2.sh: |
+    #!/bin/bash
+    # Scenario 2: Long Context - Fewer requests but very long prompts
+    echo "Scenario 2: Long Context Stress"
+    python3 load_tester.py \
+      --url $VLLM_URL \
+      --requests 30 \
+      --concurrency 15 \
+      --prompt-length 7000 \
+      --max-tokens 1024
+
+  scenario3.sh: |
+    #!/bin/bash
+    # Scenario 3: Sustained Load - Continuous pressure
+    echo "Scenario 3: Sustained Load"
+    python3 load_tester.py \
+      --url $VLLM_URL \
+      --continuous \
+      --duration 600 \
+      --concurrency 25 \
+      --prompt-length 3000
+
+  scenario4.sh: |
+    #!/bin/bash
+    # Scenario 4: Death by a Thousand Cuts - Many small requests
+    echo "Scenario 4: High Frequency Load"
+    python3 load_tester.py \
+      --url $VLLM_URL \
+      --requests 200 \
+      --concurrency 40 \
+      --prompt-length 1500 \
+      --max-tokens 256
