@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import os
 import sys
 from typing import Iterable
 
@@ -7,149 +6,129 @@ from openai import OpenAI
 import mlflow
 from mlflow.entities import AssessmentSource, AssessmentSourceType
 
+from config import setup_mlflow, MODEL_NAME, MODEL_URL, PROMPT_NAME
 
-# MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "gpt-oss-20b")
-MODEL_DEFAULT = "qwen2-5-0-5b-instruct"
-MODEL_URL = os.getenv("MODEL_URL", "http://ae8a9def8616e4e2381163e0b4d76aca-772845044.us-east-1.elb.amazonaws.com/nutrient-example/baseline-model/v1")
-# MODEL_URL = os.getenv("MODEL_URL", "http://ae8a9def8616e4e2381163e0b4d76aca-772845044.us-east-1.elb.amazonaws.com/demo-llm/gpt-oss-20b")
-SYSTEM_PROMPT = "You are an assistant that receives questions from a user using a terminal. As such, you answers are displayed in the terminal, and are expected to be mostly short, concise and not use formats like .md"
-os.environ["OPENAI_API_KEY"] = "doesn't-matter"
+
+SYSTEM_INSTRUCTIONS = "You answers are displayed in the terminal, and are expected to be mostly short, concise and not use formats like .md"
+
+mlflow.openai.autolog()
 
 
 def read_prompt_from_args_or_stdin(argv: list[str]) -> str:
-    # Usage:
-    #   ask.py "your question"
-    #   echo "your question" | ask.py
     if len(argv) > 1:
         return " ".join(argv[1:]).strip()
 
     if not sys.stdin.isatty():
         return sys.stdin.read().strip()
 
-    print("Usage: ask.py \"your question\"  (or pipe text into stdin)", file=sys.stderr)
+    print("Usage: main.py \"your question\"  (or pipe text into stdin)", file=sys.stderr)
     raise SystemExit(2)
 
 
-def create_prompt():
-    prompt = mlflow.genai.register_prompt(
-        name="terminal-prompt",
-        template=SYSTEM_PROMPT,
-        # Optional: Provide Response Format to get structured output
-        # esponse_format=ResponseFormat,
-        # Optional: Provide a commit message to describe the changes
-        # commit_message="Initial commit",
-        # Optional: Specify tags for this prompt
-        # tags={
-        #     "author": "author@example.com",
-        #     "task": "summarization",
-        #     "language": "en",
-        # },
+@mlflow.trace(name="Load Prompt Template")
+def load_system_prompt() -> str:
+    prompt = mlflow.genai.load_prompt(
+        name_or_uri=f"prompts:/{PROMPT_NAME}@production",
+        cache_ttl_seconds=60,
     )
-    return prompt
+    rendered = prompt.format(role="terminal", instructions=SYSTEM_INSTRUCTIONS)
+    return rendered
 
 
-@mlflow.trace(name="Stream Text Events", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
-def stream_text_events(events: Iterable[object]) -> int:
-    """
-    The Responses streaming API emits SSE events. We print deltas for:
-      - response.output_text.delta  (partial text chunks)
-    See event types in the API reference. :contentReference[oaicite:2]{index=2}
-    """
-    exit_code = 0
-    full_response_text = ""
-    try:
-        for event in events:
-            etype = getattr(event, "type", None)
-
-            if etype == "response.output_text.delta":
-                delta = getattr(event, "delta", "")
-                if delta:
-                    full_response_text += delta
-                    print(delta, end="", flush=True)
-
-            elif etype == "response.refusal.delta":
-                delta = getattr(event, "delta", "")
-                if delta:
-                    print(delta, end="", flush=True)
-                    exit_code = 3
-
-            elif etype == "response.failed":
-                resp = getattr(event, "response", None)
-                err = getattr(resp, "error", None) if resp else None
-                msg = getattr(err, "message", None) if err else "Response failed."
-                print(f"\n[error] {msg}", file=sys.stderr)
-                return 1
+@mlflow.trace(name="Validate Input")
+def validate_input(raw_input: str) -> str:
+    cleaned = raw_input.strip()
+    if not cleaned:
+        raise ValueError("Empty input")
+    if len(cleaned) > 2000:
+        cleaned = cleaned[:2000]
+    return cleaned
 
 
-    except KeyboardInterrupt:
-        print("\n[interrupted]", file=sys.stderr)
-        return 130
+@mlflow.trace(name="Format Messages")
+def format_messages(system_prompt: str, user_input: str) -> list[dict]:
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_input},
+    ]
+    return messages
 
-    print()  
-    return full_response_text
 
-
-@mlflow.trace(name="Calling the model", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
-def call_the_model(client, prompt):
-    events = client.responses.create(
-        model=MODEL_DEFAULT,
-        input=[
-            {
-                "role": "system",
-                "content": mlflow.genai.load_prompt(name_or_uri="prompts:/terminal-prompt@latest").format()
-            },
-            {
-                "role": "user",
-                "content": [
-                    {"type": "input_text", "text": prompt}
-                ]
-            }
-        ],
-        # input=prompt,
-        stream=True,
+@mlflow.trace(name="Call Model - Initial Response", span_type="CHAT_MODEL")
+def call_model_initial(client, messages) -> str:
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=messages,
     )
+    return response.choices[0].message.content
 
-    return events
 
-
-@mlflow.trace(name="Calling the model with chat completions", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
-def call_the_model_completions(client, prompt):
-    events = client.chat.completions.create(
-        model=MODEL_DEFAULT,
+@mlflow.trace(name="Call Model - Refine Response", span_type="CHAT_MODEL")
+def call_model_refine(client, original_question: str, initial_response: str) -> str:
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
         messages=[
             {
                 "role": "system",
-                "content": SYSTEM_PROMPT
+                "content": "You are a helpful assistant. The user asked a question and received an initial response. "
+                           "Review the response and provide a final, polished version that is concise and terminal-friendly. "
+                           "If the initial response is already good, return it as-is.",
             },
-            {"role": "user", "content": prompt},
+            {
+                "role": "user",
+                "content": f"Question: {original_question}\n\nInitial response: {initial_response}\n\nProvide the final response:",
+            },
         ],
     )
+    return response.choices[0].message.content
 
-    return events.choices[0].message.content
+
+@mlflow.trace(name="Post-process Output")
+def postprocess_output(response_text: str) -> str:
+    cleaned = response_text.strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.split("\n")
+        cleaned = "\n".join(lines[1:-1]) if len(lines) > 2 else cleaned
+    return cleaned
 
 
-@mlflow.trace(name="Complete Process", span_type="CHAT_MODEL", attributes={"model": "gpt-oss-20b"})
-def complete_model_process(prompt, client):
-    events = call_the_model(client, prompt)
+@mlflow.trace(name="Display Response")
+def display_response(final_text: str):
+    print(final_text)
+    return final_text
 
-    mlflow.update_current_trace(request_preview=prompt)
+
+@mlflow.trace(name="Complete Process", span_type="CHAIN")
+def complete_model_process(prompt: str, client: OpenAI) -> str:
+    mlflow.update_current_trace(
+        tags={
+            "user_id": "cli_user",
+            "request_type": "question",
+        },
+    )
+
     span = mlflow.get_current_active_span()
     trace_id = span.trace_id
 
-    with open('last_feedback.txt', 'w') as f:
+    with open("last_feedback.txt", "w") as f:
         f.write(trace_id)
 
-    # mlflow.update_current_trace(response_preview="This will update the response in the UI")    
+    system_prompt = load_system_prompt()
+    validated_input = validate_input(prompt)
+    messages = format_messages(system_prompt, validated_input)
 
-    full_text = stream_text_events(events)
-    return full_text
+    initial_response = call_model_initial(client, messages)
+    refined_response = call_model_refine(client, validated_input, initial_response)
+
+    final_output = postprocess_output(refined_response)
+    display_response(final_output)
+
+    return final_output
 
 
 def happy_feedback():
-    with open('last_feedback.txt', 'r') as f:
+    with open("last_feedback.txt", "r") as f:
         trace_id = f.read().strip()
-
-    print(trace_id)
 
     mlflow.log_feedback(
         trace_id=trace_id,
@@ -159,8 +138,9 @@ def happy_feedback():
         source=AssessmentSource(source_type=AssessmentSourceType.HUMAN, source_id="user_123"),
     )
 
+
 def sad_feedback():
-    with open('last_feedback.txt', 'r') as f:
+    with open("last_feedback.txt", "r") as f:
         trace_id = f.read().strip()
 
     mlflow.log_feedback(
@@ -172,16 +152,37 @@ def sad_feedback():
     )
 
 
+def rated_feedback(rating: int):
+    with open("last_feedback.txt", "r") as f:
+        trace_id = f.read().strip()
+
+    mlflow.log_feedback(
+        trace_id=trace_id,
+        name="user_rating",
+        value=rating,
+        rationale=f"User rated response {rating}/5",
+        source=AssessmentSource(source_type=AssessmentSourceType.HUMAN, source_id="user_123"),
+    )
+
+
+def log_expected_response(expected: str):
+    with open("last_feedback.txt", "r") as f:
+        trace_id = f.read().strip()
+
+    mlflow.log_expectation(
+        trace_id=trace_id,
+        name="expected_response",
+        value=expected,
+        source=AssessmentSource(source_type=AssessmentSourceType.HUMAN, source_id="user_123"),
+    )
+    print(f"Logged expected response for trace {trace_id}")
+
+
 def main() -> int:
     prompt = read_prompt_from_args_or_stdin(sys.argv)
 
-    if not os.getenv("OPENAI_API_KEY"):
-        print("OPENAI_API_KEY is not set.", file=sys.stderr)
-        return 2
-
-    # Setting up mlflow
-    mlflow.set_tracking_uri("https://mlflow-route-mlflow.apps.ocp.wnk5d.sandbox1583.opentlc.com")
-    mlflow.set_experiment("Demo Project - gpt-oss-20b")
+    setup_mlflow()
+    mlflow.genai.enable_git_model_versioning()
 
     if prompt == "good":
         happy_feedback()
@@ -191,11 +192,23 @@ def main() -> int:
         sad_feedback()
         print("negative feedback logged")
         return 0
+    elif prompt.startswith("rate "):
+        try:
+            rating = int(prompt.split(" ", 1)[1])
+            rated_feedback(rating)
+            print(f"rating {rating}/5 logged")
+        except ValueError:
+            print("Usage: main.py rate <1-5>", file=sys.stderr)
+            return 1
+        return 0
+    elif prompt.startswith("expect "):
+        expected = prompt.split(" ", 1)[1]
+        log_expected_response(expected)
+        return 0
 
     client = OpenAI(base_url=MODEL_URL)
-
-    # system_prompt = create_prompt()
     complete_model_process(prompt, client)
+    return 0
 
 
 if __name__ == "__main__":
