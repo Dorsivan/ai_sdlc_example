@@ -1,0 +1,614 @@
+[
+  {
+    "branch_id": "MV-PDX-001",
+    "branch_name": "Miruvor Portland Downtown",
+    "city": "Portland",
+    "state": "OR",
+    "region": "Pacific Northwest",
+    "manager": "Elena Vasquez",
+    "opened_year": 2019,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 142500,
+        "transactions": 18200,
+        "avg_ticket_usd": 7.83,
+        "customer_satisfaction_score": 4.2,
+        "employee_count": 14,
+        "top_selling_item": "Oat Milk Latte",
+        "narrative": "Portland Downtown had a strong start to 2024, driven by the launch of the new seasonal lavender latte menu. Morning rush traffic increased 12% compared to Q4 2023, partly due to a new office building opening on the same block. However, the branch faced staffing challenges in February when two baristas left for competitor shops, temporarily increasing wait times to an average of 6 minutes. Manager Elena Vasquez responded by cross-training kitchen staff for bar duties. Customer satisfaction dipped slightly to 4.2 from 4.4 in the prior quarter. The branch also piloted a mobile order-ahead program that accounted for 18% of transactions by March."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 158900,
+        "transactions": 20100,
+        "avg_ticket_usd": 7.91,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 16,
+        "top_selling_item": "Cold Brew",
+        "narrative": "Q2 was the strongest quarter for Portland Downtown in two years. The mobile order-ahead program expanded to cover 28% of all transactions, reducing in-store wait times to under 3 minutes. Two new hires stabilized the team, and Elena introduced a weekly barista training session that improved drink consistency. Cold brew sales surged 40% as temperatures rose earlier than usual in the Pacific Northwest. The branch hosted three community latte art events that drew significant social media attention and boosted weekend foot traffic by 22%. Revenue crossed $158K for the first time, and customer satisfaction rebounded to 4.5."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 161200,
+        "transactions": 20800,
+        "avg_ticket_usd": 7.75,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 15,
+        "top_selling_item": "Iced Matcha Latte",
+        "narrative": "Summer maintained the momentum from Q2, with iced drinks accounting for 62% of all orders. The branch introduced an iced matcha latte that quickly became the top seller, outpacing cold brew by mid-July. One experienced barista left to attend graduate school, bringing the team down to 15, but the cross-training from Q1 meant coverage gaps were minimal. Portland's summer street fair in August drove a single-day revenue record of $3,200. Average ticket size dipped slightly as customers favored simpler iced drinks over specialty items. The branch began testing a loyalty stamp card program with a free drink after every 10 purchases."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 139800,
+        "transactions": 17500,
+        "avg_ticket_usd": 7.99,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 15,
+        "top_selling_item": "Pumpkin Spice Latte",
+        "narrative": "Q4 saw the expected seasonal slowdown as Portland's rainy season arrived in full force. Foot traffic dropped 16% from Q3, though average ticket size increased as customers shifted to larger, warmer specialty drinks. The pumpkin spice latte drove October sales but interest faded by December. The loyalty stamp card showed promising early results with a 35% redemption rate, and repeat customer visits increased by 8%. The branch invested in a minor renovation, adding two additional indoor seats and improving lighting, which cost $12,000 but is expected to improve the winter experience. Holiday gift card sales contributed $8,500 in revenue."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-SEA-002",
+    "branch_name": "Miruvor Seattle Capitol Hill",
+    "city": "Seattle",
+    "state": "WA",
+    "region": "Pacific Northwest",
+    "manager": "Marcus Chen",
+    "opened_year": 2020,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 167300,
+        "transactions": 21500,
+        "avg_ticket_usd": 7.78,
+        "customer_satisfaction_score": 4.6,
+        "employee_count": 18,
+        "top_selling_item": "Cortado",
+        "narrative": "Seattle Capitol Hill continued to be the top-performing branch in the Pacific Northwest region. The dense neighborhood foot traffic and proximity to three tech company offices kept morning rush consistently strong. Manager Marcus Chen introduced a rotating single-origin pour-over menu that attracted specialty coffee enthusiasts and drove a 15% increase in afternoon sales. The branch maintained the highest customer satisfaction score in the chain at 4.6. A partnership with a local bakery for fresh pastry delivery each morning boosted food attachment rate to 34% of transactions. Rainy January and February actually increased drive-through traffic by 20%."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 175600,
+        "transactions": 22800,
+        "avg_ticket_usd": 7.70,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 18,
+        "top_selling_item": "Single-Origin Pour Over",
+        "narrative": "The Capitol Hill location set a chain-wide revenue record in Q2, crossing $175K. The single-origin pour-over program became the branch's signature offering, with customers specifically visiting for the weekly rotation. However, a water main break on the block forced a three-day closure in May, costing an estimated $5,400 in lost revenue. Marcus quickly set up a temporary sidewalk cart during the closure that recovered about $1,200 of the loss. Two baristas received specialty coffee certifications, further elevating the branch's reputation. Customer satisfaction dipped marginally to 4.5 due to the closure disruption."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 171900,
+        "transactions": 22100,
+        "avg_ticket_usd": 7.78,
+        "customer_satisfaction_score": 4.7,
+        "employee_count": 19,
+        "top_selling_item": "Nitro Cold Brew",
+        "narrative": "Seattle's pleasant summer weather shifted consumption patterns toward outdoor seating, and the branch's sidewalk patio saw 45% higher utilization than Q3 2023. Nitro cold brew on tap became the star product, with the Instagram-worthy cascading effect driving social media mentions up 60%. Marcus hired one additional part-time barista to handle the summer surge, bringing the team to 19. The branch achieved its highest-ever satisfaction score of 4.7 after implementing a customer feedback QR code system. A collaboration with a local artist to display rotating artwork in the shop generated press coverage in two Seattle lifestyle blogs."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 163400,
+        "transactions": 20900,
+        "avg_ticket_usd": 7.82,
+        "customer_satisfaction_score": 4.6,
+        "employee_count": 18,
+        "top_selling_item": "Gingerbread Latte",
+        "narrative": "Q4 brought Seattle's typical grey skies and rain, but Capitol Hill's indoor ambiance and the holiday menu kept traffic resilient. The gingerbread latte launched in November and immediately became the seasonal favorite. Revenue dipped only 5% from Q3, the smallest seasonal drop across all branches. The part-time summer hire departed as planned, returning the team to 18. Marcus organized a holiday cupping event with a local roaster that sold out in two hours and generated a waitlist of 40 people. The branch's full-year revenue of $678K made it the highest-grossing Miruvor location for the second consecutive year."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-AUS-003",
+    "branch_name": "Miruvor Austin South Congress",
+    "city": "Austin",
+    "state": "TX",
+    "region": "Southwest",
+    "manager": "Jordan Rivera",
+    "opened_year": 2021,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 189200,
+        "transactions": 24300,
+        "avg_ticket_usd": 7.78,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 20,
+        "top_selling_item": "Horchata Latte",
+        "narrative": "Austin South Congress had an exceptional Q1 thanks to SXSW in March, which alone drove a 45% spike in daily transactions for two weeks. The branch's location on the iconic South Congress strip positioned it perfectly for festival foot traffic. The horchata latte, a menu item unique to this location, became a hit with out-of-town visitors. However, the festival rush exposed capacity limitations — peak wait times hit 15 minutes, and the branch ran out of oat milk twice. Manager Jordan Rivera is planning layout changes to improve throughput for next year's festival season. Regular customer satisfaction dipped to 4.3 as locals felt crowded out during SXSW."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 152100,
+        "transactions": 19800,
+        "avg_ticket_usd": 7.68,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 19,
+        "top_selling_item": "Iced Horchata Latte",
+        "narrative": "Post-SXSW normalization brought Q2 revenue back to baseline levels. Austin's early heat wave in April pushed iced drink sales up to 70% of all orders by mid-quarter. Jordan reduced the team by one after a barista relocated, but the smaller crew managed well given the post-festival traffic drop. The iced version of the horchata latte maintained its popularity with locals who discovered it during SXSW. The branch invested in a new high-capacity ice machine after the old one struggled to keep up with demand. Customer satisfaction improved to 4.4 as the shop returned to its regular neighborhood vibe."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 138700,
+        "transactions": 17900,
+        "avg_ticket_usd": 7.75,
+        "customer_satisfaction_score": 4.1,
+        "employee_count": 17,
+        "top_selling_item": "Cold Brew",
+        "narrative": "Q3 was the toughest quarter for Austin South Congress. Triple-digit temperatures in July and August suppressed foot traffic on South Congress, as pedestrians avoided the sun-exposed sidewalks. Two baristas left — one for a competing coffee chain and one returning to college — dropping the team to 17. Jordan struggled to hire replacements in Austin's competitive service industry labor market. Revenue fell 9% from Q2, and the branch recorded its lowest satisfaction score of the year at 4.1, primarily due to longer wait times from understaffing. The cold brew remained popular but the branch had to simplify its menu temporarily, dropping three specialty items."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 156800,
+        "transactions": 20200,
+        "avg_ticket_usd": 7.76,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 19,
+        "top_selling_item": "Mexican Hot Chocolate",
+        "narrative": "Cooler fall temperatures brought relief and foot traffic back to South Congress. Jordan successfully hired two new baristas in October, restoring the team and enabling the full specialty menu to return. The Mexican hot chocolate, a new seasonal offering, resonated with the local market and became the quarter's best seller. Austin's Formula 1 race weekend in October provided a mini SXSW-like boost with a 30% transaction spike over three days. The branch ended Q4 on an upswing with revenue recovering to $156K. Plans for Q1 2025 include a layout reconfiguration to add a dedicated mobile order pickup area."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-DEN-004",
+    "branch_name": "Miruvor Denver LoDo",
+    "city": "Denver",
+    "state": "CO",
+    "region": "Mountain",
+    "manager": "Sarah Kim",
+    "opened_year": 2020,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 134600,
+        "transactions": 17100,
+        "avg_ticket_usd": 7.87,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 15,
+        "top_selling_item": "Maple Oat Latte",
+        "narrative": "Denver LoDo benefited from a strong ski season, with weekend mornings seeing 25% higher traffic from tourists heading to the mountains. The maple oat latte became a winter favorite, and manager Sarah Kim secured a partnership with a local honey producer that gave the branch a unique selling point. The LoDo neighborhood's ongoing residential development brought new regulars, with the branch adding 200 loyalty program members during the quarter. Satisfaction remained strong at 4.4. The only challenge was a two-day closure in January due to a heavy snowstorm that made roads impassable, costing approximately $3,800 in lost revenue."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 141200,
+        "transactions": 18400,
+        "avg_ticket_usd": 7.67,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 15,
+        "top_selling_item": "Lavender Cold Brew",
+        "narrative": "Spring in Denver brought outdoor patio season, and the branch's rooftop seating area became a major draw. The lavender cold brew was introduced as a spring special and outsold expectations by 50%, earning a permanent spot on the menu. Sarah organized a coffee education workshop series on Saturday mornings that averaged 12 attendees per session and created strong community ties. Revenue grew 5% from Q1 as the neighborhood continued to develop. The branch hit its stride operationally with zero employee turnover for the second consecutive quarter, contributing to the highest satisfaction score of the year at 4.5."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 128900,
+        "transactions": 16800,
+        "avg_ticket_usd": 7.67,
+        "customer_satisfaction_score": 4.0,
+        "employee_count": 13,
+        "top_selling_item": "Iced Americano",
+        "narrative": "Q3 was disrupted by a planned three-week renovation in August to expand the bar area and add a second espresso machine. The closure cost approximately $18,000 in lost revenue but was deemed necessary for long-term throughput improvements. During the renovation, Sarah reassigned two baristas to other locations temporarily, and one chose not to return, dropping the team to 13. Post-renovation, the expanded bar reduced peak-hour wait times by 30%. Customer satisfaction dropped to 4.0 due to the closure disruption but showed signs of recovery in September. Revenue for the quarter was the lowest of the year at $128K."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 148300,
+        "transactions": 18900,
+        "avg_ticket_usd": 7.85,
+        "customer_satisfaction_score": 4.6,
+        "employee_count": 16,
+        "top_selling_item": "Peppermint Mocha",
+        "narrative": "The renovation investment paid off immediately in Q4. The second espresso machine and expanded bar enabled the branch to handle morning rushes without the bottlenecks that had plagued it previously. Sarah hired three new team members, bringing the staff to 16 and providing comfortable coverage. The peppermint mocha holiday special was the top seller, and ski season tourism resumed with even stronger numbers than Q1. Revenue hit $148K, the best quarter in the branch's history, and satisfaction jumped to 4.6. The Denver Broncos' improved season also boosted Sunday morning traffic from fans heading to nearby Empower Field."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-CHI-005",
+    "branch_name": "Miruvor Chicago Loop",
+    "city": "Chicago",
+    "state": "IL",
+    "region": "Midwest",
+    "manager": "David Okonkwo",
+    "opened_year": 2018,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 121400,
+        "transactions": 15600,
+        "avg_ticket_usd": 7.78,
+        "customer_satisfaction_score": 4.0,
+        "employee_count": 14,
+        "top_selling_item": "Double Espresso",
+        "narrative": "Chicago Loop struggled with an exceptionally harsh winter in Q1. Polar vortex conditions in January brought wind chills below -30°F on multiple days, suppressing foot traffic in the Loop business district by an estimated 25%. Many office workers stayed home on the worst days, and even regular commuters shortened their walking routes. Manager David Okonkwo pivoted to push delivery partnerships, adding DoorDash and Uber Eats, which generated $11,200 in new revenue but at lower margins. The double espresso remained the staple for commuters rushing to offices. Two employees called out frequently during the cold snaps, straining the remaining team."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 146800,
+        "transactions": 18900,
+        "avg_ticket_usd": 7.77,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 15,
+        "top_selling_item": "Iced Vanilla Latte",
+        "narrative": "Spring thaw brought Chicago back to life, and Loop office traffic recovered strongly. David landed a corporate catering contract with a law firm two blocks away, providing weekly meeting orders worth $1,800 per month. This B2B revenue stream proved highly profitable due to bulk preparation efficiency. A new hire replaced an underperforming team member, and the fresh energy improved morale across the staff. The iced vanilla latte became the go-to as temperatures warmed. The branch also benefited from increased tourism as Millennium Park events resumed, drawing visitors who wandered into the Loop for coffee. Revenue jumped 21% from the winter quarter."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 153200,
+        "transactions": 19700,
+        "avg_ticket_usd": 7.78,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 16,
+        "top_selling_item": "Chicago Blend Iced Coffee",
+        "narrative": "Q3 was the best quarter for Chicago Loop in over two years. Summer tourism peaked, the corporate catering contract expanded to include a second law firm, and David introduced a house-branded Chicago Blend iced coffee that became a local favorite. The branch hired an additional barista to handle increased volume, and the expanded team reduced average wait times to under 4 minutes. Lollapalooza weekend in late July drove the highest single-weekend revenue of the year at $7,800. David also implemented a new inventory management system that reduced waste by 12%, directly improving margins."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 137500,
+        "transactions": 17600,
+        "avg_ticket_usd": 7.81,
+        "customer_satisfaction_score": 4.2,
+        "employee_count": 15,
+        "top_selling_item": "Peppermint Mocha",
+        "narrative": "The expected winter slowdown arrived, though it was less severe than Q1 thanks to a milder early winter. The corporate catering contracts continued to provide stable B2B revenue through the holiday season. One barista left for a full-time position elsewhere, and David chose not to replace them given the seasonal volume drop, bringing the team to 15. Holiday-themed drinks performed well, with the peppermint mocha leading sales. The delivery partnerships from Q1 continued to contribute about 8% of revenue. The branch's full-year performance showed strong recovery from 2023, with total revenue of $558K, up 11% year-over-year."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-NSH-006",
+    "branch_name": "Miruvor Nashville Broadway",
+    "city": "Nashville",
+    "state": "TN",
+    "region": "Southeast",
+    "manager": "Priya Patel",
+    "opened_year": 2022,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 128900,
+        "transactions": 16800,
+        "avg_ticket_usd": 7.67,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 15,
+        "top_selling_item": "Tennessee Honey Latte",
+        "narrative": "Nashville Broadway maintained steady performance in Q1, benefiting from the city's year-round tourism industry. The Tennessee honey latte, made with locally sourced honey, continued to be the branch's signature drink. Manager Priya Patel negotiated a partnership with a neighboring live music venue to offer a 10% discount to concertgoers, which drove 300 additional transactions during the quarter. The branch's late-night hours on Friday and Saturday set it apart from competitors in the area. However, rising rent on Broadway remained a concern, with a 6% lease increase taking effect in March."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 155700,
+        "transactions": 20300,
+        "avg_ticket_usd": 7.67,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 16,
+        "top_selling_item": "Sweet Tea Cold Brew",
+        "narrative": "CMA Fest in June turned Nashville into a coffee-lover's destination, and the Broadway branch captured significant tourist traffic. Priya introduced a sweet tea cold brew fusion that appealed to both locals and visitors, becoming the quarter's surprise hit. The live music venue partnership expanded to include pre-show coffee service, adding a dedicated to-go station near the venue entrance. An additional hire brought the team to 16 to handle summer volume. Revenue jumped 21% from Q1, and the branch recorded its best satisfaction score yet at 4.5. Priya was nominated for Miruvor's internal Manager of the Quarter award."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 149300,
+        "transactions": 19400,
+        "avg_ticket_usd": 7.70,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 16,
+        "top_selling_item": "Sweet Tea Cold Brew",
+        "narrative": "Summer tourism remained strong through Q3, though slightly below the CMA Fest peak. The sweet tea cold brew maintained its popularity and Priya petitioned to make it a permanent menu item chain-wide. Nashville's heat drove higher iced drink volumes, with 65% of orders being cold beverages. The branch hosted two acoustic music nights in-store that drew 50+ attendees each and generated social media buzz. Late-night weekend hours continued to differentiate the branch, with 9pm-midnight contributing 12% of weekend revenue. One challenge was a health inspection that flagged minor storage issues, which Priya resolved within 48 hours."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 143600,
+        "transactions": 18700,
+        "avg_ticket_usd": 7.68,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 15,
+        "top_selling_item": "Tennessee Honey Latte",
+        "narrative": "Holiday tourism kept Nashville busy, though Broadway foot traffic shifted from music tourists to holiday shoppers. The Tennessee honey latte reclaimed the top spot as cooler weather arrived. Priya organized a holiday-themed latte art competition among staff that was filmed and posted on social media, garnering 12,000 views. One barista departed for a career change, bringing the team to 15, but the remaining crew handled the holiday volume well. The New Year's Eve celebration in downtown Nashville created the single busiest night of the year. Full-year revenue of $577K represented strong performance for a relatively young branch in its third year of operation."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-BOS-007",
+    "branch_name": "Miruvor Boston Back Bay",
+    "city": "Boston",
+    "state": "MA",
+    "region": "Northeast",
+    "manager": "Michael Torres",
+    "opened_year": 2019,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 136200,
+        "transactions": 17800,
+        "avg_ticket_usd": 7.65,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 15,
+        "top_selling_item": "Cappuccino",
+        "narrative": "Boston Back Bay saw a quiet Q1 as the university winter break reduced the student traffic that typically accounts for 30% of weekday afternoon sales. Snow storms in January caused two half-day closures but the branch otherwise operated normally. Manager Michael Torres used the slower period to retrain the team on espresso extraction techniques, resulting in measurably improved drink quality scores in internal audits. The cappuccino remained the neighborhood favorite among Back Bay's professional crowd. A new study-friendly seating arrangement with added power outlets attracted remote workers, who tend to order multiple drinks per visit."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 151800,
+        "transactions": 19600,
+        "avg_ticket_usd": 7.74,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 16,
+        "top_selling_item": "Iced Americano",
+        "narrative": "The return of university students from spring break through finals season created a sustained traffic boost. Boston Marathon Monday in April was the single highest revenue day of the quarter, as spectators flooded the Back Bay area. Michael hired one additional barista for the spring-summer season and introduced an afternoon happy hour with $1 off espresso drinks between 2-4pm, which increased the typically slow afternoon period's revenue by 25%. The iced Americano emerged as the favorite as Boston warmed up. The branch also started hosting a weekly book club meetup that built a dedicated community of regulars."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 144500,
+        "transactions": 18800,
+        "avg_ticket_usd": 7.69,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 15,
+        "top_selling_item": "Cold Brew",
+        "narrative": "Summer brought a shift in customer demographics as university students left Boston and tourist traffic replaced them. Cold brew sales doubled from Q2 as the city experienced a heat wave in July. The afternoon happy hour continued to perform well and was made permanent. Michael lost one seasonal employee and chose not to replace them over summer, managing with 15. The book club grew to 20 regular members and started generating word-of-mouth referrals. A minor plumbing issue in August required a half-day closure for repairs. The branch saw steady but unspectacular performance, with revenue tracking slightly below Q2."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 157300,
+        "transactions": 20100,
+        "avg_ticket_usd": 7.83,
+        "customer_satisfaction_score": 4.6,
+        "employee_count": 16,
+        "top_selling_item": "Eggnog Latte",
+        "narrative": "Q4 was Boston Back Bay's best quarter of the year, driven by the return of university students in September and the holiday season. The eggnog latte became an unexpected hit, with Boston's cold weather making it the perfect comfort drink. Michael rehired for the holidays, bringing the team to 16. The study-friendly seating arrangement paid dividends during finals season in December, with students occupying every seat from opening to close. The branch saw a 15% increase in average daily revenue during finals weeks. Holiday gift card sales totaled $9,200, and the book club's end-of-year holiday event drew 35 attendees. Full-year revenue of $589K marked a 7% improvement over 2023."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-SDG-008",
+    "branch_name": "Miruvor San Diego Gaslamp",
+    "city": "San Diego",
+    "state": "CA",
+    "region": "West Coast",
+    "manager": "Lisa Nakamura",
+    "opened_year": 2021,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 145800,
+        "transactions": 18700,
+        "avg_ticket_usd": 7.80,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 16,
+        "top_selling_item": "Flat White",
+        "narrative": "San Diego Gaslamp enjoyed the benefits of Southern California's mild winter climate, maintaining consistent foot traffic throughout Q1. The flat white continued to be the neighborhood favorite among the Gaslamp Quarter's mix of professionals and tourists. Manager Lisa Nakamura completed an expansion of the outdoor patio, adding 8 seats that increased capacity by 20%. The investment of $15,000 was funded by the previous year's profits. Weekend brunch traffic grew 10% as the expanded patio attracted families. The branch maintained the most consistent quarterly revenue across the entire chain, with less than 5% variance between its best and worst months."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 152400,
+        "transactions": 19500,
+        "avg_ticket_usd": 7.82,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 16,
+        "top_selling_item": "Coconut Cold Brew",
+        "narrative": "Comic-Con preparation began early, with Lisa securing extra inventory and scheduling additional shifts for the July event. Q2 itself was steady, with the new coconut cold brew becoming a warm-weather staple. The expanded patio saw full utilization on weekends, confirming the investment decision. San Diego's tourism board featured the branch in a local coffee guide, driving about 200 additional visits from tourists during the quarter. Employee retention remained excellent with zero turnover for the fifth consecutive quarter, a chain record. Lisa attributed this to flexible scheduling and a team culture focused on barista development."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 168900,
+        "transactions": 21600,
+        "avg_ticket_usd": 7.82,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 18,
+        "top_selling_item": "Iced Coconut Cold Brew",
+        "narrative": "Comic-Con in late July was the biggest revenue event of the year, with four consecutive days of $3,000+ daily sales. Lisa hired two temporary baristas for the event and kept them through August to handle the summer tourist season. The Gaslamp Quarter was packed throughout the summer, and the iced coconut cold brew was the go-to order for visitors exploring the neighborhood. Satisfaction dipped slightly to 4.3 during Comic-Con due to extended wait times despite the extra staff. September brought a return to normalcy with strong steady performance. The branch's year-to-date revenue of $467K put it on track for a record year."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 149100,
+        "transactions": 19100,
+        "avg_ticket_usd": 7.81,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 16,
+        "top_selling_item": "Flat White",
+        "narrative": "San Diego's mild autumn and winter meant Q4 was only a slight step down from the summer peak. The two temporary hires from Comic-Con departed as planned, returning the team to 16. The flat white reclaimed the top spot as the core customer base of Gaslamp professionals returned to their routines. Lisa launched a small retail section selling branded mugs and whole-bean coffee, which generated $4,300 in additional revenue. The branch hosted a holiday charity drive that collected 500 pounds of food donations, generating positive local press coverage. Full-year revenue of $616K made San Diego Gaslamp the second highest-grossing branch after Seattle."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-MIN-009",
+    "branch_name": "Miruvor Minneapolis Uptown",
+    "city": "Minneapolis",
+    "state": "MN",
+    "region": "Midwest",
+    "manager": "Anna Lindqvist",
+    "opened_year": 2020,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 108700,
+        "transactions": 14200,
+        "avg_ticket_usd": 7.65,
+        "customer_satisfaction_score": 4.1,
+        "employee_count": 13,
+        "top_selling_item": "Hot Chocolate",
+        "narrative": "Minneapolis Uptown faced the chain's most extreme winter conditions, with temperatures regularly dropping below -10°F in January. The harsh weather cut foot traffic by 35% compared to autumn levels. Hot chocolate outsold coffee for the first time in any Miruvor branch, reflecting customers' desire for warmth and comfort. Manager Anna Lindqvist launched a loyalty program offering a free drink after 10 purchases, which enrolled 450 members by March. The loyalty program helped maintain a base of regular customers despite the weather. Two baristas struggled with commuting in the snow, leading to occasional short-staffing on the worst days."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 132500,
+        "transactions": 17300,
+        "avg_ticket_usd": 7.66,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 14,
+        "top_selling_item": "Iced Mocha",
+        "narrative": "Spring transformed Minneapolis Uptown, with the Uptown neighborhood's walkable streets filling with residents eager to be outdoors after the long winter. Revenue jumped 22% from Q1 as foot traffic normalized. Anna hired one new barista and the loyalty program showed its value, with enrolled members visiting 40% more frequently than non-members. The iced mocha became the seasonal favorite, and the branch introduced a sidewalk sandwich board with daily specials that improved walk-in conversion. The local farmers market returning to the neighborhood also boosted Saturday morning traffic. Satisfaction climbed to 4.4 as service quality improved with the full team."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 139800,
+        "transactions": 18100,
+        "avg_ticket_usd": 7.72,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 14,
+        "top_selling_item": "Minnesota Nice Iced Tea Latte",
+        "narrative": "Q3 was the peak season for Minneapolis Uptown, with warm summer weather and the vibrant Uptown nightlife driving evening traffic. Anna created a locally-inspired Minnesota Nice iced tea latte that resonated with the neighborhood's identity and became the top seller. The branch participated in the Uptown Art Fair in August, operating a pop-up cart at the event that generated $2,800 in revenue and introduced the brand to hundreds of new potential customers. The loyalty program reached 800 members. The branch achieved its highest-ever satisfaction score of 4.5, and revenue hit $139K, the best quarterly result since opening."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 115400,
+        "transactions": 14900,
+        "avg_ticket_usd": 7.74,
+        "customer_satisfaction_score": 4.2,
+        "employee_count": 13,
+        "top_selling_item": "Spiced Apple Cider Latte",
+        "narrative": "Winter returned early to Minneapolis, with the first significant snowfall in late October. Foot traffic declined rapidly through November and December, though the loyalty program helped retain core customers. The spiced apple cider latte provided seasonal appeal but couldn't offset the weather-driven traffic drop. One barista moved out of state, reducing the team to 13. Anna negotiated with the landlord for a small rent reduction during winter months, citing the seasonal business pattern. The branch explored adding a drive-through window but the building's lease terms would not permit exterior modifications. Full-year revenue of $496K was modest but represented 8% growth over 2023."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-MIA-010",
+    "branch_name": "Miruvor Miami Wynwood",
+    "city": "Miami",
+    "state": "FL",
+    "region": "Southeast",
+    "manager": "Carlos Mendez",
+    "opened_year": 2022,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 158400,
+        "transactions": 20400,
+        "avg_ticket_usd": 7.76,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 17,
+        "top_selling_item": "Cuban Espresso",
+        "narrative": "Miami Wynwood had an outstanding Q1, fueled by Art Basel's lingering momentum from December and Miami's peak tourist season running through March. The branch's location in the trendy Wynwood arts district attracted a mix of tourists, art gallery visitors, and local creatives. The Cuban espresso, a nod to Miami's coffee culture, remained the signature item and accounted for 25% of all orders. Manager Carlos Mendez commissioned a local muralist to paint the exterior wall, creating an Instagram-worthy backdrop that generated thousands of social media posts. Spring break tourism in March added another traffic boost."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 141200,
+        "transactions": 18300,
+        "avg_ticket_usd": 7.71,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 17,
+        "top_selling_item": "Café con Leche Iced",
+        "narrative": "Q2 brought Miami's summer heat and humidity, which shifted customer preferences heavily toward iced drinks. The café con leche iced became the top seller, blending traditional Cuban coffee culture with the need for cold refreshment. Tourist traffic declined from Q1's peak but the Wynwood neighborhood's resident artist community provided steady weekday business. Carlos introduced a co-working morning package offering unlimited drip coffee for $12 that attracted freelancers and remote workers. The branch experienced a plumbing issue that required a one-day closure in May. Revenue dipped 11% from Q1 but remained strong for the typically slower summer period."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 119800,
+        "transactions": 15600,
+        "avg_ticket_usd": 7.68,
+        "customer_satisfaction_score": 3.9,
+        "employee_count": 15,
+        "top_selling_item": "Cold Brew",
+        "narrative": "Hurricane season significantly impacted Q3 performance. A Category 2 hurricane in early September forced a four-day closure and caused minor water damage to the interior that required $8,500 in repairs. The week before the hurricane, customers stocked up on supplies rather than visiting coffee shops, and the week after saw reduced traffic as the neighborhood cleaned up. Two baristas evacuated and did not return, dropping the team to 15. Carlos managed the crisis well but the financial impact was substantial — Q3 revenue of $119K was the lowest in the branch's history. Satisfaction fell to 3.9, the lowest score in the chain, partly due to the post-hurricane reduced menu."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 162700,
+        "transactions": 21000,
+        "avg_ticket_usd": 7.75,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 17,
+        "top_selling_item": "Cuban Espresso",
+        "narrative": "Q4 brought a dramatic recovery as Art Basel returned in December and Miami's high season kicked in. Carlos hired two new baristas and restored the full menu. The hurricane repairs were completed, and the refreshed interior actually looked better than before. Art Basel week alone generated $14,200 in revenue, making it the highest single-week performance of any Miruvor branch all year. The Cuban espresso reclaimed its top spot with tourists eager to try Miami's signature coffee style. The mural from Q1 continued to drive social media traffic, with the branch appearing in three travel blogs' 'best coffee in Miami' lists. Full-year revenue of $582K showed the branch's resilience despite the hurricane setback."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-PHX-011",
+    "branch_name": "Miruvor Phoenix Scottsdale",
+    "city": "Scottsdale",
+    "state": "AZ",
+    "region": "Southwest",
+    "manager": "Rachel Foster",
+    "opened_year": 2021,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 143200,
+        "transactions": 18400,
+        "avg_ticket_usd": 7.78,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 16,
+        "top_selling_item": "Honey Lavender Latte",
+        "narrative": "Phoenix Scottsdale thrived in Q1 as Arizona's pleasant winter weather attracted snowbird tourists and winter residents. The honey lavender latte was a customer favorite, and manager Rachel Foster expanded the pastry selection to include locally made scones from a Scottsdale bakery. Morning traffic was particularly strong from 7-9am as golf resort guests sought coffee before their tee times. The branch's proximity to Scottsdale's luxury shopping district provided consistent afternoon traffic from shoppers. Rachel organized a charity coffee tasting event that raised $2,400 for a local food bank and earned positive coverage in the Arizona Republic."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 135600,
+        "transactions": 17400,
+        "avg_ticket_usd": 7.79,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 15,
+        "top_selling_item": "Iced Vanilla Bean Latte",
+        "narrative": "As temperatures climbed past 100°F in May, foot traffic patterns shifted dramatically. Morning visits compressed into the 6-8am window before the heat became oppressive, and afternoon traffic nearly disappeared between 1-4pm. Iced drinks made up 80% of all orders, the highest ratio in the chain. The snowbird tourists departed, reducing the customer base to locals only. One barista left for a position closer to home, and Rachel adjusted shifts to concentrate staffing during the cooler morning hours. Despite the heat challenges, the branch maintained decent performance through efficient scheduling. Revenue dropped 5% from Q1 but remained above $135K."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 118500,
+        "transactions": 15300,
+        "avg_ticket_usd": 7.75,
+        "customer_satisfaction_score": 4.2,
+        "employee_count": 14,
+        "top_selling_item": "Iced Americano",
+        "narrative": "Q3 was the toughest quarter as Phoenix endured 45 consecutive days above 110°F. The extreme heat kept residents indoors and foot traffic hit the year's low point. Rachel introduced a curbside pickup service where customers could order by phone and have drinks brought to their car, which accounted for 22% of Q3 transactions. Another barista left, citing the summer heat making their commute unbearable, bringing the team to 14. The branch reduced operating hours, closing at 4pm instead of 7pm on weekdays to avoid the hottest afternoon hours when virtually no customers came in. Revenue of $118K was the year's lowest but curbside pickup prevented a worse outcome."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 151700,
+        "transactions": 19500,
+        "avg_ticket_usd": 7.78,
+        "customer_satisfaction_score": 4.5,
+        "employee_count": 16,
+        "top_selling_item": "Pumpkin Spice Latte",
+        "narrative": "Cooler temperatures and the return of snowbird tourists revitalized Phoenix Scottsdale in Q4. Revenue surged 28% from Q3 as foot traffic recovered and the full operating hours resumed. Rachel hired two new baristas to rebuild the team, and the pumpkin spice latte drove strong seasonal sales. The curbside pickup service was retained as a permanent offering, contributing a consistent 10% of daily transactions. Golf season resumed in full, restoring the morning tourist coffee run. The branch hosted a holiday market in partnership with local artisans that drew 200 visitors over a weekend. Full-year revenue of $549K demonstrated the challenging but manageable seasonality of the Arizona market."
+      }
+    ]
+  },
+  {
+    "branch_id": "MV-ATL-012",
+    "branch_name": "Miruvor Atlanta Midtown",
+    "city": "Atlanta",
+    "state": "GA",
+    "region": "Southeast",
+    "manager": "Jasmine Washington",
+    "opened_year": 2023,
+    "quarters": [
+      {
+        "quarter": "Q1-2024",
+        "revenue_usd": 98500,
+        "transactions": 12800,
+        "avg_ticket_usd": 7.70,
+        "customer_satisfaction_score": 4.0,
+        "employee_count": 12,
+        "top_selling_item": "Caramel Macchiato",
+        "narrative": "Atlanta Midtown entered 2024 as the newest branch in the Miruvor chain, still in its ramp-up phase after opening in mid-2023. Manager Jasmine Washington focused on building brand awareness in the competitive Midtown coffee market, where three established competitors operated within a two-block radius. The caramel macchiato was the top seller as Jasmine played it safe with crowd-pleasing menu items. She distributed 5,000 flyers at nearby Georgia Tech campus and Midtown office buildings, which generated about 400 first-time visits. Revenue of $98K was below the chain average but consistent with the branch's growth trajectory. The Super Bowl being held in Atlanta in February provided no measurable boost as the branch is not near the stadium district."
+      },
+      {
+        "quarter": "Q2-2024",
+        "revenue_usd": 118200,
+        "transactions": 15400,
+        "avg_ticket_usd": 7.68,
+        "customer_satisfaction_score": 4.2,
+        "employee_count": 13,
+        "top_selling_item": "Peach Sweet Tea Latte",
+        "narrative": "Q2 showed encouraging growth as word-of-mouth and the flyering campaign brought in new regulars. Jasmine introduced a Georgia-inspired peach sweet tea latte that became an instant local favorite and differentiated the branch from competitors. She hired one additional barista and established relationships with two nearby office buildings for group lunch orders. Georgia Tech's spring semester brought student traffic that hadn't existed in the branch's first few months. Revenue grew 20% from Q1, the fastest quarterly growth rate in the chain. Satisfaction improved to 4.2 as the team gained experience and the branch found its rhythm."
+      },
+      {
+        "quarter": "Q3-2024",
+        "revenue_usd": 126400,
+        "transactions": 16500,
+        "avg_ticket_usd": 7.66,
+        "customer_satisfaction_score": 4.3,
+        "employee_count": 14,
+        "top_selling_item": "Iced Peach Sweet Tea Latte",
+        "narrative": "Atlanta's hot summer pushed the iced version of the peach sweet tea latte to the top of the menu. The branch continued its growth trajectory, with revenue up 7% from Q2. Jasmine partnered with a local fitness studio to offer post-workout smoothie bowls alongside coffee, bringing in a new customer segment. She hired another barista, bringing the team to 14, which allowed her to extend operating hours to 8pm on weekdays. The Midtown neighborhood's ongoing residential development added new potential customers each month. A community open mic night experiment on Thursday evenings drew modest but enthusiastic crowds of 15-20 people."
+      },
+      {
+        "quarter": "Q4-2024",
+        "revenue_usd": 132800,
+        "transactions": 17200,
+        "avg_ticket_usd": 7.72,
+        "customer_satisfaction_score": 4.4,
+        "employee_count": 14,
+        "top_selling_item": "Salted Caramel Mocha",
+        "narrative": "Q4 capped a year of steady growth for Atlanta Midtown. The salted caramel mocha was a holiday hit, and the open mic nights expanded to twice monthly. Georgia Tech's fall semester brought the strongest student traffic yet as awareness of the branch grew on campus. Jasmine established a study group discount offering 15% off for groups of four or more, which filled tables during weekday afternoons. Revenue of $132K represented a 35% improvement from Q1, the strongest annual growth curve of any branch. The branch's full-year revenue of $475K was still the lowest in the chain, but the trajectory suggested it would reach chain-average performance by mid-2025. Jasmine received Miruvor's Rookie Manager of the Year award."
+      }
+    ]
+  }
+]

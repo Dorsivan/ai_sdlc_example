@@ -1,2 +1,4 @@
 code-example/venv
 nutrient-example/venv
+rag/venv
+rag/chroma_db
