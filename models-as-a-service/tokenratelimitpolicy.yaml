@@ -1,0 +1,14 @@
+spec:
+  limits:
+    1-req-per-min:
+      counters:
+        - expression: auth.identity.userid
+      rates:
+        - limit: 100
+          window: 1m
+      when:
+        - predicate: auth.identity.selected_subscription_key == "models-as-a-service/gpt-oss-20b-subscription@demo-llm/gpt-oss-20b" && !request.path.endsWith("/v1/models")
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: gpt-oss-20b-kserve-route
