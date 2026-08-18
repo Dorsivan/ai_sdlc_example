@@ -143,6 +143,64 @@ These all require cluster-scoped mode to manage via ArgoCD:
 
 **PersistentVolumeClaim** is namespace-scoped and does **not** require cluster-scoped mode.
 
+## Troubleshooting: Comparing a Working Cluster vs a Broken One
+
+If you have a working cluster where a user-defined ArgoCD instance (in a custom namespace, not `openshift-gitops`) can manage cluster-scoped resources — but the Subscription doesn't have `ARGOCD_CLUSTER_CONFIG_NAMESPACES` set — something else is granting it cluster-scoped mode.
+
+### Symptoms
+
+- **Working cluster:** ArgoCD UI shows the in-cluster connection managing "all namespaces"
+- **Broken cluster:** ArgoCD UI shows the in-cluster connection managing only specific labeled namespaces, and the list can't be changed
+
+### Diagnostic Commands (run on BOTH clusters and compare)
+
+```bash
+# 1. Check the ArgoCD CR for any cluster-scoped config
+oc get argocd -n <argocd-namespace> -o yaml
+# Look for: spec.resourceInclusions, spec.resourceExclusions,
+# or any field that might toggle cluster-scoped behavior
+
+# 2. Check if ARGOCD_CLUSTER_CONFIG_NAMESPACES is set anywhere
+#    (even if not on the Subscription — it could be on the Deployment directly)
+oc get subscription openshift-gitops-operator \
+  -n openshift-gitops-operator \
+  -o jsonpath='{.spec.config.env}' 2>/dev/null; echo
+
+oc get deployment -n openshift-gitops-operator -o yaml \
+  | grep -A2 ARGOCD_CLUSTER_CONFIG_NAMESPACES
+
+# 3. Check what ClusterRoles exist for the ArgoCD controller
+oc get clusterrole | grep argocd
+
+# 4. Check for ClusterRoleBindings pointing to the controller SA
+oc get clusterrolebinding | grep argocd
+
+# 5. Check if the controller SA has cluster-scoped permissions
+oc auth can-i create persistentvolumes \
+  --as system:serviceaccount:<namespace>:<instance-name>-argocd-application-controller
+
+oc auth can-i create namespaces \
+  --as system:serviceaccount:<namespace>:<instance-name>-argocd-application-controller
+
+# 6. Compare GitOps operator versions (behavior may differ between versions)
+oc get csv -n openshift-gitops-operator | grep gitops
+
+# 7. Check if there's a cluster secret for the in-cluster connection
+#    (vanilla ArgoCD stores this as a secret; OpenShift GitOps may not)
+oc get secret -n <argocd-namespace> -l argocd.argoproj.io/secret-type=cluster -o yaml
+```
+
+### Possible Explanations
+
+The working cluster might have cluster-scoped mode enabled through:
+
+1. **`ARGOCD_CLUSTER_CONFIG_NAMESPACES` set on the operator Deployment** (not the Subscription) — someone may have patched the Deployment directly
+2. **A different operator version** — behavior around default cluster-scoped permissions has changed between GitOps operator versions
+3. **Manually created ClusterRoleBindings** — someone may have granted the controller SA cluster-admin outside of the operator's normal flow
+4. **A different ArgoCD CR spec** — the ArgoCD custom resource itself may have fields that influence scoping
+
+Compare the output of the commands above between both clusters — the difference will tell you exactly what's granting cluster-scoped access on the working one.
+
 ## Alternative: Use PVCs with Dynamic Provisioning
 
 If you don't actually need to manage PVs directly, consider using **PersistentVolumeClaims** with a StorageClass that supports dynamic provisioning. PVCs are namespace-scoped resources and work fine in namespaced mode — no operator changes needed.
